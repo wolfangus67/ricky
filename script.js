@@ -1,5 +1,4 @@
 import * as pdfjsLib from './pdfjs/pdf.mjs';
-import translations from './translations.js';
 
 pdfjsLib.GlobalWorkerOptions.workerSrc = './pdfjs/pdf.worker.mjs';
 
