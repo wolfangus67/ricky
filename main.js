@@ -3,7 +3,7 @@
 import { openPdfViewer, initializePdfViewer } from './pdfViewer.js';
 import { initializeAudioPlayer, toggleAudio } from './audio.js';
 import { openYoutubeViewer } from './tutorial.js';
-
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' https://api.github.com https://raw.githubusercontent.com; script-src 'self' 'unsafe-inline' https://www.youtube.com https://s.ytimg.com; frame-src https://www.youtube.com; img-src 'self' https://i.ytimg.com data:;">
 document.addEventListener('DOMContentLoaded', async () => {
     await initializePdfViewer();
     initializeAudioPlayer();
