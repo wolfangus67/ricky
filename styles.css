@@ -20,14 +20,14 @@ header {
     display: flex;
     align-items: center;
     justify-content: center; /* Pour centrer le titre dans l'en-tête */
-    font-size: 28px; /* Ajustez selon vos préférences */
+    font-size: 30px; /* Ajustez selon vos préférences */
     margin: 0; /* Pour supprimer les marges par défaut du h1 */
 }
 
 .title-icon {
-    width: 30px; /* Ajustez la taille selon vos besoins */
-    height: 30px;
-    margin-right: 10px; /* Espace entre l'icône et le texte */
+    width: 40px; /* Ajustez la taille selon vos besoins */
+    height: 40px;
+    margin-right: 30px; /* Espace entre l'icône et le texte */
 }
 /* Sélecteur de langue */
 #language-selector {
