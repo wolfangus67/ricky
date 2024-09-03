@@ -1,4 +1,4 @@
-const translations = {
+export const translations = {
     'fr': {
         'title': 'Tablatures Ukulélé',
         'viewPdf': 'Voir la tablature PDF',
@@ -36,3 +36,23 @@ const translations = {
         'pageOf': 'Página {current} de {total}'
     }
 };
+
+export function setLanguage(lang) {
+    document.getElementById('main-title').textContent = translations[lang].title;
+    document.getElementById('prev-page').textContent = translations[lang].prevPage;
+    document.getElementById('next-page').textContent = translations[lang].nextPage;
+    document.getElementById('close-pdf').textContent = translations[lang].close;
+    
+    document.getElementById('search-input').setAttribute('placeholder', translations[lang].searchPlaceholder);
+    document.getElementById('search-button').textContent = translations[lang].searchButton;
+
+    document.querySelectorAll('.view-pdf').forEach(button => {
+        button.textContent = translations[lang].viewPdf;
+    });
+    document.querySelectorAll('.view-tutorial').forEach(button => {
+        button.textContent = translations[lang].viewTutorial;
+    });
+    document.querySelectorAll('.play-audio').forEach(button => {
+        button.textContent = translations[lang].playAudio;
+    });
+}
