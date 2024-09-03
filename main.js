@@ -5,7 +5,6 @@ import { translations, setLanguage, translate } from './translations.js';
 import { initializeSearch, updateSearchTranslation } from './search.js';
 
 let currentLang = 'fr';
-let pdfIndex = [];
 
 document.addEventListener('DOMContentLoaded', async () => {
     try {
@@ -27,44 +26,43 @@ async function loadSongs() {
     try {
         const response = await fetch('https://api.github.com/repos/wolfangus67/ricky/contents/songs');
         const files = await response.json();
-        pdfIndex = files
-            .filter(file => file.name.endsWith('.pdf'))
-            .map(file => {
-                const [artist, title] = file.name.replace('.pdf', '').split(' - ');
-                return { artist, title, fileName: file.name };
-            });
+        const ukuleleNeck = document.getElementById('ukulele-neck');
 
-        displaySongs();
+        if (!ukuleleNeck) {
+            throw new Error("L'élément 'ukulele-neck' n'a pas été trouvé.");
+        }
+
+        files.forEach((file) => {
+            if (file.name.endsWith('.pdf')) {
+                const songName = file.name.replace('.pdf', '').replace(/_/g, ' ');
+                const pdfUrl = `https://wolfangus67.github.io/ricky/songs/${encodeURIComponent(file.name)}`;
+                const songElement = createSongElement(songName, pdfUrl);
+                ukuleleNeck.appendChild(songElement);
+            }
+        });
     } catch (error) {
-        console.error('Erreur lors du chargement des chansons:', error);
+        console.error('Erreur lors du chargement de la liste des chansons:', error);
         showErrorMessage("Une erreur s'est produite lors du chargement des chansons. Veuillez réessayer plus tard.");
     }
 }
 
-function displaySongs() {
-    const songsList = document.getElementById('songs-list');
-    songsList.innerHTML = '';
-
-    pdfIndex.forEach(song => {
-        const songElement = createSongElement(song.title, song.fileName);
-        songsList.appendChild(songElement);
-    });
-}
-
-function createSongElement(title, fileName) {
+function createSongElement(songName, pdfUrl) {
     const songElement = document.createElement('div');
     songElement.className = 'song';
 
-    const songLink = document.createElement('a');
-    songLink.href = '#';
-    songLink.textContent = title;
-    songLink.addEventListener('click', (e) => {
-        e.preventDefault();
-        const pdfUrl = `https://wolfangus67.github.io/ricky/songs/${encodeURIComponent(fileName)}`;
-        openPdfViewer(pdfUrl);
-    });
+    songElement.innerHTML = `
+        <h2>${songName}</h2>
+        <div class="button-container">
+            <button class="view-pdf" data-translate="viewPdf">${translate('viewPdf', currentLang)}</button>
+            <button class="view-tutorial" data-translate="viewTutorial">${translate('viewTutorial', currentLang)}</button>
+            <button class="play-audio" data-translate="playAudio">${translate('playAudio', currentLang)}</button>
+        </div>
+    `;
 
-    songElement.appendChild(songLink);
+    songElement.querySelector('.view-pdf').addEventListener('click', () => openPdfViewer(pdfUrl));
+    songElement.querySelector('.view-tutorial').addEventListener('click', () => openYoutubeViewer(songName));
+    songElement.querySelector('.play-audio').addEventListener('click', (e) => toggleAudio(songName, e.target));
+
     return songElement;
 }
 
