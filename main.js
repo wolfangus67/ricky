@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         // Définir la langue par défaut avant toute autre initialisation
         await setDefaultLanguage();
 
-        await initializePdfViewer();
+       // await initializePdfViewer();
         initializeAudioPlayer();
         initializeSearch();
         setLanguage(currentLang);
