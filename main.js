@@ -6,12 +6,17 @@ import { openYoutubeViewer } from './tutorial.js';
 import { setLanguage, translate } from './translations.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
-    await initializePdfViewer();
-    initializeAudioPlayer();
-    setLanguage('fr'); // Initialisez la langue par défaut
-    await loadSongs();
-    setupLanguageSelector();
-    updateTranslations();
+    try {
+        await initializePdfViewer();
+        initializeAudioPlayer();
+        setLanguage('fr'); // Initialisez la langue par défaut
+        await loadSongs();
+        setupLanguageSelector();
+        updateTranslations();
+    } catch (error) {
+        console.error('Erreur lors de l\'initialisation:', error);
+        showErrorMessage('Une erreur est survenue lors du chargement de la page. Veuillez réessayer.');
+    }
 });
 
 function setupLanguageSelector() {
@@ -24,6 +29,8 @@ function setupLanguageSelector() {
                 updateTranslations();
             }
         });
+    } else {
+        console.error('Élément language-selector non trouvé');
     }
 }
 
@@ -41,8 +48,7 @@ async function loadSongs() {
         const ukuleleNeck = document.getElementById('ukulele-neck');
 
         if (!ukuleleNeck) {
-            console.error("L'élément 'ukulele-neck' n'a pas été trouvé.");
-            return;
+            throw new Error("L'élément 'ukulele-neck' n'a pas été trouvé.");
         }
 
         files.forEach((file) => {
@@ -55,10 +61,7 @@ async function loadSongs() {
         });
     } catch (error) {
         console.error('Erreur lors du chargement de la liste des chansons:', error);
-        // Afficher un message d'erreur à l'utilisateur
-        const errorMessage = document.createElement('p');
-        errorMessage.textContent = "Une erreur s'est produite lors du chargement des chansons. Veuillez réessayer plus tard.";
-        document.body.appendChild(errorMessage);
+        showErrorMessage("Une erreur s'est produite lors du chargement des chansons. Veuillez réessayer plus tard.");
     }
 }
 
@@ -84,4 +87,11 @@ function createSongElement(songName, pdfUrl) {
     songElement.querySelector('.play-audio').addEventListener('click', (e) => toggleAudio(songName, e.target));
 
     return songElement;
+}
+
+function showErrorMessage(message) {
+    const errorElement = document.createElement('div');
+    errorElement.className = 'error-message';
+    errorElement.textContent = message;
+    document.body.appendChild(errorElement);
 }
