@@ -1,181 +1,216 @@
-/* styles.css */
-
+/* Styles généraux */
 body {
-    font-family: Arial, sans-serif;
-    line-height: 1.6;
+    font-family: 'Arial', sans-serif;
     margin: 0;
     padding: 20px;
-    background-color: #f4f4f4;
+    background-color: #f2e6d9; /* Fond légèrement beige rappelant le bois clair */
 }
 
+/* En-tête */
+header {
+    background-color: #8B4513; /* Brun foncé pour l'en-tête */
+    color: #f2e6d9; /* Texte clair sur fond foncé */
+    padding: 20px;
+    text-align: center;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Sélecteur de langue */
+#language-selector {
+    margin-top: 10px;
+}
+
+#language-selector img {
+    width: 30px;
+    height: 20px;
+    margin: 0 5px;
+    cursor: pointer;
+}
+
+/* Barre de recherche */
+#search-container {
+    position: relative;
+    margin-top: 20px;
+    text-align: center;
+}
+
+#search-input {
+    padding: 10px;
+    width: 300px;
+    border: 1px solid #8B4513;
+    border-radius: 5px;
+    background-color: #f2e6d9;
+    color: #4A2C2A;
+    font-size: 16px;
+}
+
+#search-button {
+    padding: 10px 20px;
+    background-color: #8B4513;
+    color: #f2e6d9;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-left: 10px;
+}
+
+/* Liste de suggestions */
+#suggestion-list {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 300px;
+    max-height: 200px;
+    overflow-y: auto;
+    background-color: #D2B48C;
+    border: 1px solid #8B4513;
+    border-top: none;
+    border-radius: 0 0 5px 5px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    z-index: 1000;
+    display: none;
+}
+
+#suggestion-list li {
+    padding: 10px;
+    cursor: pointer;
+    color: #4A2C2A;
+}
+
+#suggestion-list li:hover {
+    background-color: #CD853F;
+}
+
+#suggestion-list li .highlight {
+    font-weight: bold;
+    color: #8B4513;
+}
+
+/* Liste des chansons */
 #ukulele-neck {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Grille de 3 colonnes */
+    gap: 20px; /* Espace entre les éléments */
+    margin-top: 20px;
 }
 
 .song {
-    background-color: #fff;
+    background-color: #D2B48C; /* Couleur tan pour rappeler le bois */
+    border: 1px solid #8B4513; /* Bordure brun foncé */
     border-radius: 5px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    margin: 10px;
     padding: 15px;
-    width: 300px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
 }
 
 .song h2 {
-    margin-top: 0;
-    color: #333;
+    margin: 0 0 10px 0;
+    color: #4A2C2A; /* Couleur sombre pour le titre */
+    font-family: 'Georgia', serif;
 }
 
 .button-container {
     display: flex;
-    justify-content: space-between;
-    margin-top: 10px;
+    gap: 10px;
 }
 
-.button-container button,
-.button-container a {
-    background-color: #4CAF50; /* Couleur de fond par défaut */
+.song button {
+    padding: 8px 12px;
     border: none;
-    color: white;
-    padding: 10px 15px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 14px;
-    margin: 4px 2px;
-    cursor: pointer;
     border-radius: 4px;
-    transition: background-color 0.3s;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+    color: #f2e6d9; /* Texte clair pour les boutons */
 }
 
-.button-container button:hover,
-.button-container a:hover {
-    background-color: #45a049; /* Couleur de fond au survol */
+.view-pdf {
+    background-color: #6B8E23; /* Vert olive foncé */
 }
 
-.button-container .view-pdf {
-    background-color: #008CBA; /* Couleur spécifique pour le bouton "Voir PDF" */
+.view-tutorial {
+    background-color: #8B4513; /* Brun */
 }
 
-.button-container .view-pdf:hover {
-    background-color: #007B9E; /* Couleur au survol pour "Voir PDF" */
+.play-audio {
+    background-color: #CD853F; /* Brun clair */
 }
 
-.button-container .view-tutorial {
-    background-color: #f44336; /* Couleur spécifique pour le bouton "Voir le tutoriel" */
+.song button:hover {
+    opacity: 0.8;
 }
 
-.button-container .view-tutorial:hover {
-    background-color: #da190b; /* Couleur au survol pour "Voir le tutoriel" */
-}
-
-.button-container .play-audio {
-    background-color: #ff9800; /* Couleur spécifique pour le bouton "Jouer l'audio" */
-}
-
-.button-container .play-audio:hover {
-    background-color: #e68a00; /* Couleur au survol pour "Jouer l'audio" */
-}
-
-/* Nouveau style pour le bouton "Télécharger PDF" */
-.button-container a.download-pdf {
-    background-color: #4CAF50; /* Couleur de fond pour le bouton "Télécharger PDF" */
-}
-
-.button-container a.download-pdf:hover {
-    background-color: #45a049; /* Couleur au survol pour "Télécharger PDF" */
-}
-
+/* Styles pour le visualiseur PDF */
 #pdf-viewer {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.8);
+    background-color: rgba(139, 69, 19, 0.9); /* Fond brun semi-transparent */
     display: none;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
-    z-index: 1000;
-}
-
-#pdf-container {
-    background-color: white;
-    padding: 20px;
-    border-radius: 5px;
-    max-width: 90%;
-    max-height: 90%;
-    overflow: auto;
+    justify-content: center;
 }
 
 #pdf-controls {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
 }
 
 #pdf-controls button {
-    background-color: #4CAF50; /* Couleur de fond pour les contrôles PDF */
+    margin: 0 10px;
+    padding: 10px 20px;
+    background-color: #6B8E23; /* Vert olive foncé */
+    color: #f2e6d9;
     border: none;
-    color: white;
-    padding: 10px 15px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 14px;
-    margin: 4px 2px;
+    border-radius: 5px;
     cursor: pointer;
-    border-radius: 4px;
 }
 
-#close-pdf {
-    background-color: #f44336; /* Couleur spécifique pour le bouton "Fermer le PDF" */
+/* Canvas pour le PDF */
+#pdf-render {
+    max-width: 90%;
+    max-height: 80%;
 }
 
+/* Responsive design */
+@media (max-width: 900px) {
+    #ukulele-neck {
+        grid-template-columns: repeat(2, 1fr); /* 2 colonnes sur les écrans moyens */
+    }
+}
+
+@media (max-width: 600px) {
+    #ukulele-neck {
+        grid-template-columns: 1fr; /* 1 colonne sur les petits écrans */
+    }
+
+    #search-input {
+        width: 200px;
+    }
+
+    .song {
+        padding: 10px;
+    }
+
+    .song button {
+        padding: 6px 10px;
+        font-size: 12px;
+    }
+}
+
+/* Styles pour les messages d'erreur */
 .error-message {
     background-color: #f8d7da;
     color: #721c24;
     padding: 10px;
     margin: 10px 0;
     border: 1px solid #f5c6cb;
-    border-radius: 4px;
-}
-
-#search-container {
-    margin-bottom: 20px;
-}
-
-#search-input {
-    padding: 10px;
-    width: 70%;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-}
-
-#search-button {
-    padding: 10px 20px;
-    background-color: #4CAF50; /* Couleur de fond pour le bouton de recherche */
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-#search-button:hover {
-    background-color: #45a049; /* Couleur au survol pour le bouton de recherche */
-}
-
-#language-selector {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-}
-
-#language-selector img {
-    width: 30px;
-    height: 20px;
-    margin-left: 10px;
-    cursor: pointer;
+    border-radius: 5px;
 }
