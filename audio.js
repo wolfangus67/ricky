@@ -1,7 +1,5 @@
 // audio.js
 
-import { translations } from './translations.js';
-
 const API_KEY = 'AIzaSyDiFuUIrm1WXjp9slhwMl4G4R23kssEwr0'; // Remplacez par votre clé API sécurisée
 
 let player;
@@ -20,7 +18,6 @@ function loadYouTubeAPI() {
     const firstScriptTag = document.getElementsByTagName('script')[0];
     firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
-    // Définir la fonction onYouTubeIframeAPIReady globalement
     window.onYouTubeIframeAPIReady = onYouTubeIframeAPIReady;
 }
 
@@ -69,7 +66,8 @@ export async function toggleAudio(songName, button) {
                 player.playVideo();
                 isPlaying = true;
             } else {
-                console.error('No video found for:', songName);
+                console.error('Aucune vidéo trouvée pour:', songName);
+                showErrorMessage("Impossible de trouver la vidéo pour cette chanson.");
                 return;
             }
         }
@@ -77,6 +75,7 @@ export async function toggleAudio(songName, button) {
         updateButtonState();
     } catch (error) {
         console.error('Erreur lors de la lecture de l\'audio:', error);
+        showErrorMessage("Une erreur s'est produite lors de la lecture de l'audio.");
     }
 }
 
@@ -89,13 +88,25 @@ function updateButtonState() {
 async function getYouTubeVideoId(query) {
     try {
         const response = await fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&q=${encodeURIComponent(query)}&key=${API_KEY}&type=video&maxResults=1`);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
         const data = await response.json();
         return data.items[0]?.id.videoId;
     } catch (error) {
         console.error('Erreur lors de la récupération de l\'ID vidéo YouTube:', error);
+        showErrorMessage("Impossible de charger la vidéo YouTube. Veuillez réessayer plus tard.");
+        return null;
     }
 }
 
 export function setCurrentLanguage(lang) {
     currentLang = lang;
+}
+
+function showErrorMessage(message) {
+    const errorElement = document.createElement('div');
+    errorElement.className = 'error-message';
+    errorElement.textContent = message;
+    document.body.appendChild(errorElement);
 }
