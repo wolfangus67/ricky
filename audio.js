@@ -1,7 +1,10 @@
+// audio.js
+
 const API_KEY = 'AIzaSyDiFuUIrm1WXjp9slhwMl4G4R23kssEwr0';
 
 let player;
 let currentVideoId = null;
+let isPlaying = false;
 
 export function initializeAudioPlayer() {
     loadYouTubeAPI();
@@ -23,7 +26,8 @@ window.onYouTubeIframeAPIReady = function() {
             'controls': 0,
         },
         events: {
-            'onReady': onPlayerReady
+            'onReady': onPlayerReady,
+            'onStateChange': onPlayerStateChange
         }
     });
 }
@@ -32,17 +36,42 @@ function onPlayerReady(event) {
     console.log("YouTube player is ready");
 }
 
-export async function playAudio(songName) {
-    const videoId = await getYouTubeVideoId(songName);
-    if (videoId) {
-        if (currentVideoId !== videoId) {
-            player.loadVideoById(videoId);
-            currentVideoId = videoId;
-        }
-        player.playVideo();
-    } else {
-        console.error('No video found for:', songName);
+function onPlayerStateChange(event) {
+    if (event.data == YT.PlayerState.ENDED) {
+        isPlaying = false;
+        updateButtonState();
     }
+}
+
+export async function toggleAudio(songName, button) {
+    if (isPlaying) {
+        player.pauseVideo();
+        isPlaying = false;
+    } else {
+        const videoId = await getYouTubeVideoId(songName);
+        if (videoId) {
+            if (currentVideoId !== videoId) {
+                player.loadVideoById(videoId);
+                currentVideoId = videoId;
+            }
+            player.playVideo();
+            isPlaying = true;
+        } else {
+            console.error('No video found for:', songName);
+            return;
+        }
+    }
+    updateButtonState(button);
+}
+
+function updateButtonState(button) {
+    if (button) {
+        button.textContent = isPlaying ? 'Stop' : 'Lecture';
+    }
+    // Mettre à jour tous les boutons si nécessaire
+    document.querySelectorAll('.play-audio').forEach(btn => {
+        btn.textContent = btn === button && isPlaying ? 'Stop' : 'Lecture';
+    });
 }
 
 async function getYouTubeVideoId(query) {
