@@ -14,6 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     songElement.innerHTML = `
                         <h2>${songName}</h2>
                         <button class="view-pdf" data-pdf-url="${fileUrl}">Voir la tablature PDF</button>
+                        <button class="view-tutorial" data-song-name="${songName}">Voir le tuto</button>
                     `;
                     songList.appendChild(songElement);
                 }
@@ -21,10 +22,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
             document.querySelectorAll('.view-pdf').forEach(button => {
                 button.addEventListener('click', (e) => {
-                    console.log('Button clicked');
                     const pdfUrl = e.target.getAttribute('data-pdf-url');
-                    console.log('PDF URL:', pdfUrl);
                     openPdfViewer(pdfUrl);
+                });
+            });
+
+            document.querySelectorAll('.view-tutorial').forEach(button => {
+                button.addEventListener('click', (e) => {
+                    const songName = e.target.getAttribute('data-song-name');
+                    openYoutubeViewer(songName);
                 });
             });
         } catch (error) {
@@ -33,15 +39,12 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function openPdfViewer(url) {
-        console.log('Opening PDF viewer with URL:', url);
         const iframe = document.getElementById('pdf-iframe');
         const loadingIndicator = document.getElementById('loading');
         
-        // Afficher l'indicateur de chargement
         loadingIndicator.style.display = 'block';
         
         iframe.onload = function() {
-            // Masquer l'indicateur de chargement une fois le PDF chargé
             loadingIndicator.style.display = 'none';
         };
         
@@ -49,10 +52,21 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('pdf-viewer').style.display = 'block';
     }
 
+    function openYoutubeViewer(songName) {
+        const iframe = document.getElementById('youtube-iframe');
+        const searchQuery = encodeURIComponent(`ricky somborn tutorial ${songName}`);
+        iframe.src = `https://www.youtube.com/embed?listType=search&list=${searchQuery}`;
+        document.getElementById('youtube-viewer').style.display = 'block';
+    }
+
     document.getElementById('close-pdf').addEventListener('click', () => {
-        console.log('Closing PDF viewer');
         document.getElementById('pdf-viewer').style.display = 'none';
         document.getElementById('pdf-iframe').src = '';
+    });
+
+    document.getElementById('close-youtube').addEventListener('click', () => {
+        document.getElementById('youtube-viewer').style.display = 'none';
+        document.getElementById('youtube-iframe').src = '';
     });
 
     getSongList();
