@@ -1,3 +1,5 @@
+// pdfViewer.mjs
+
 let pdfDoc = null;
 let pageNum = 1;
 let pageRendering = false;
@@ -14,34 +16,39 @@ export function initializePdfControls() {
     ctx = canvas.getContext('2d');
 }
 
-export function openPdfViewer(pdfUrl) {
+export async function openPdfViewer(pdfUrl) {
     document.getElementById('pdf-viewer').style.display = 'flex';
-    pdfjsLib.getDocument(pdfUrl).promise.then(function(pdf) {
-        pdfDoc = pdf;
+    try {
+        const pdfjsLib = await import('https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.9.359/pdf.esm.min.js');
+        pdfDoc = await pdfjsLib.getDocument(pdfUrl).promise;
         document.getElementById('page-num').textContent = pageNum;
         renderPage(pageNum);
-    });
+    } catch (error) {
+        console.error('Error loading PDF:', error);
+    }
 }
 
-function renderPage(num) {
+async function renderPage(num) {
     pageRendering = true;
-    pdfDoc.getPage(num).then(function(page) {
-        let viewport = page.getViewport({scale: scale});
+    try {
+        const page = await pdfDoc.getPage(num);
+        const viewport = page.getViewport({scale: scale});
         canvas.height = viewport.height;
         canvas.width = viewport.width;
-        let renderContext = {
+        const renderContext = {
             canvasContext: ctx,
             viewport: viewport
         };
-        let renderTask = page.render(renderContext);
-        renderTask.promise.then(function() {
-            pageRendering = false;
-            if (pageNumPending !== null) {
-                renderPage(pageNumPending);
-                pageNumPending = null;
-            }
-        });
-    });
+        await page.render(renderContext).promise;
+        pageRendering = false;
+        if (pageNumPending !== null) {
+            renderPage(pageNumPending);
+            pageNumPending = null;
+        }
+    } catch (error) {
+        console.error('Error rendering page:', error);
+        pageRendering = false;
+    }
     document.getElementById('page-num').textContent = num;
 }
 
@@ -54,17 +61,13 @@ function queueRenderPage(num) {
 }
 
 function onPrevPage() {
-    if (pageNum <= 1) {
-        return;
-    }
+    if (pageNum <= 1) return;
     pageNum--;
     queueRenderPage(pageNum);
 }
 
 function onNextPage() {
-    if (pageNum >= pdfDoc.numPages) {
-        return;
-    }
+    if (pageNum >= pdfDoc.numPages) return;
     pageNum++;
     queueRenderPage(pageNum);
 }
