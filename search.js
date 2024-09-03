@@ -1,3 +1,5 @@
+// search.js
+
 let songIndex = {};
 let artistIndex = {};
 
@@ -14,13 +16,11 @@ function initializeSearch() {
                         fileUrl: file.download_url
                     };
 
-                    // Indexer par artiste
                     if (!artistIndex[artist]) {
                         artistIndex[artist] = [];
                     }
                     artistIndex[artist].push(songInfo);
 
-                    // Indexer tous les morceaux
                     songIndex[title.toLowerCase()] = songInfo;
                 }
             });
@@ -44,7 +44,7 @@ function searchSongs(query) {
 
 function displaySearchResults(results) {
     const ukuleleNeck = document.getElementById('ukulele-neck');
-    ukuleleNeck.innerHTML = ''; // Clear existing content
+    ukuleleNeck.innerHTML = '';
 
     if (results.length === 0) {
         ukuleleNeck.innerHTML = '<p>Aucun résultat trouvé.</p>';
@@ -62,22 +62,43 @@ function displaySearchResults(results) {
         ukuleleNeck.appendChild(songElement);
     });
 
-    // Réattacher les event listeners
+    attachEventListeners();
+}
+
+function attachEventListeners() {
     document.querySelectorAll('.view-pdf').forEach(button => {
         button.addEventListener('click', (e) => {
             const pdfUrl = e.target.getAttribute('data-pdf-url');
-            // Appeler la fonction d'ouverture de PDF ici
             console.log('Opening PDF:', pdfUrl);
+            // Appeler la fonction d'ouverture de PDF ici
         });
     });
 
     document.querySelectorAll('.view-tutorial').forEach(button => {
         button.addEventListener('click', (e) => {
             const songName = e.target.getAttribute('data-song-name');
-            // Appeler la fonction d'ouverture de tutoriel YouTube ici
             console.log('Opening tutorial for:', songName);
+            // Appeler la fonction d'ouverture de tutoriel YouTube ici
         });
     });
+}
+
+function createSuggestionsList(results) {
+    const suggestionsList = document.getElementById('suggestions-list');
+    suggestionsList.innerHTML = '';
+
+    results.forEach(song => {
+        const li = document.createElement('li');
+        li.textContent = `${song.artist} - ${song.title}`;
+        li.addEventListener('click', () => {
+            document.getElementById('search-input').value = `${song.artist} - ${song.title}`;
+            suggestionsList.style.display = 'none';
+            displaySearchResults([song]);
+        });
+        suggestionsList.appendChild(li);
+    });
+
+    suggestionsList.style.display = results.length > 0 ? 'block' : 'none';
 }
 
 function handleSearch() {
@@ -90,17 +111,39 @@ function handleSearch() {
 document.addEventListener('DOMContentLoaded', () => {
     initializeSearch();
     
-    const searchButton = document.getElementById('search-button');
-    if (searchButton) {
-        searchButton.addEventListener('click', handleSearch);
-    }
-
     const searchInput = document.getElementById('search-input');
-    if (searchInput) {
-        searchInput.addEventListener('keyup', (e) => {
-            if (e.key === 'Enter') {
-                handleSearch();
-            }
-        });
-    }
+    const searchButton = document.getElementById('search-button');
+    const suggestionsList = document.createElement('ul');
+    suggestionsList.id = 'suggestions-list';
+    suggestionsList.style.display = 'none';
+    document.getElementById('search-container').appendChild(suggestionsList);
+
+    searchInput.addEventListener('input', (e) => {
+        const query = e.target.value;
+        if (query.length > 1) {
+            const results = searchSongs(query);
+            createSuggestionsList(results.slice(0, 5)); // Limiter à 5 suggestions
+        } else {
+            suggestionsList.style.display = 'none';
+        }
+    });
+
+    searchInput.addEventListener('keyup', (e) => {
+        if (e.key === 'Enter') {
+            handleSearch();
+            suggestionsList.style.display = 'none';
+        }
+    });
+
+    searchButton.addEventListener('click', () => {
+        handleSearch();
+        suggestionsList.style.display = 'none';
+    });
+
+    // Cacher les suggestions si on clique en dehors
+    document.addEventListener('click', (e) => {
+        if (e.target !== searchInput && e.target !== suggestionsList) {
+            suggestionsList.style.display = 'none';
+        }
+    });
 });
