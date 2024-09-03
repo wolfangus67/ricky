@@ -85,4 +85,19 @@ function createSongElement(songName, pdfUrl) {
     songElement.innerHTML = `
         <h2>${songName}</h2>
         <div class="button-container">
-            <
+            <a href="${pdfUrl}" target="_blank" class="view-pdf">Voir PDF</a>
+        </div>
+    `;
+
+    return songElement;
+}
+
+function showErrorMessage(message) {
+    const errorElement = document.createElement('div');
+    errorElement.className = 'error-message';
+    errorElement.textContent = message;
+    document.body.appendChild(errorElement);
+}
+
+// Exporter les fonctions pour les utiliser dans d'autres fichiers
+export { gapiLoaded, gisLoaded, handleAuthClick, tokenClient };
