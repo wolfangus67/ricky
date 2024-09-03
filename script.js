@@ -35,6 +35,16 @@ document.addEventListener('DOMContentLoaded', () => {
     function openPdfViewer(url) {
         console.log('Opening PDF viewer with URL:', url);
         const iframe = document.getElementById('pdf-iframe');
+        const loadingIndicator = document.getElementById('loading');
+        
+        // Afficher l'indicateur de chargement
+        loadingIndicator.style.display = 'block';
+        
+        iframe.onload = function() {
+            // Masquer l'indicateur de chargement une fois le PDF chargé
+            loadingIndicator.style.display = 'none';
+        };
+        
         iframe.src = `https://docs.google.com/viewer?url=${encodeURIComponent(url)}&embedded=true`;
         document.getElementById('pdf-viewer').style.display = 'block';
     }
