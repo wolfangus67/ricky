@@ -6,7 +6,7 @@ let player;
 let currentVideoId = null;
 let isPlaying = false;
 let currentPlayingButton = null;
-let currentLang = 'fr'; // Langue par défaut
+let currentLang = 'fr';
 
 export function initializeAudioPlayer() {
     loadYouTubeAPI();
@@ -17,9 +17,12 @@ function loadYouTubeAPI() {
     tag.src = "https://www.youtube.com/iframe_api";
     const firstScriptTag = document.getElementsByTagName('script')[0];
     firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+    // Définir la fonction onYouTubeIframeAPIReady globalement
+    window.onYouTubeIframeAPIReady = onYouTubeIframeAPIReady;
 }
 
-window.onYouTubeIframeAPIReady = function() {
+function onYouTubeIframeAPIReady() {
     player = new YT.Player('player', {
         height: '0',
         width: '0',
@@ -84,4 +87,5 @@ async function getYouTubeVideoId(query) {
 }
 
 export function setCurrentLanguage(lang) {
-    currentLang =
+    currentLang = lang;
+}
