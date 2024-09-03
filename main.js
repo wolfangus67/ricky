@@ -1,9 +1,12 @@
+// main.js
+
 import { openPdfViewer, initializePdfViewer } from './pdfViewer.js';
 import { initializeAudioPlayer, toggleAudio, setCurrentLanguage } from './audio.js';
 import { openYoutubeViewer } from './tutorial.js';
 import { translations, setLanguage, translate } from './translations.js';
 import { initializeSearch, updateSearchTranslation } from './search.js';
-import { gapiLoaded, gisLoaded, handleAuthClick, tokenClient } from './gdrive.js';
+// NOUVEAU: Import des fonctions de gdrive.js
+import { gapiLoaded, gisLoaded, handleAuthClick } from './gdrive.js';
 
 let currentLang = 'fr';
 
@@ -17,6 +20,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         await loadSongs();
         setupLanguageSelector();
         updateAllTranslations();
+        // NOUVEAU: Initialisation de Google Drive
         setupGoogleDrive();
     } catch (error) {
         console.error('Erreur lors de l\'initialisation:', error);
@@ -24,10 +28,16 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 });
 
+// NOUVEAU: Fonction pour configurer Google Drive
 function setupGoogleDrive() {
     gapiLoaded();
     gisLoaded();
-    document.getElementById('authorize_button').addEventListener('click', handleAuthClick);
+    const authorizeButton = document.getElementById('authorize_button');
+    if (authorizeButton) {
+        authorizeButton.addEventListener('click', handleAuthClick);
+    } else {
+        console.error("Le bouton d'autorisation n'a pas été trouvé");
+    }
 }
 
 async function loadSongs() {
@@ -104,3 +114,5 @@ function showErrorMessage(message) {
     errorElement.textContent = message;
     document.body.appendChild(errorElement);
 }
+
+// Pour revenir en arrière, supprimez ou commentez les lignes marquées NOUVEAU
