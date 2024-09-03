@@ -57,6 +57,10 @@ document.addEventListener('DOMContentLoaded', () => {
             const viewport = page.getViewport({ scale });
 
             const container = document.getElementById('pdf-container');
+            if (!container) {
+                console.error('PDF container not found');
+                return;
+            }
             container.innerHTML = ''; // Clear previous content
             const canvas = document.createElement('canvas');
             container.appendChild(canvas);
@@ -71,7 +75,12 @@ document.addEventListener('DOMContentLoaded', () => {
             };
             await page.render(renderContext);
 
-            document.getElementById('pdf-viewer').style.display = 'block';
+            const pdfViewer = document.getElementById('pdf-viewer');
+            if (pdfViewer) {
+                pdfViewer.style.display = 'block';
+            } else {
+                console.error('PDF viewer element not found');
+            }
         } catch (error) {
             console.error('Error loading PDF:', error);
         }
@@ -86,9 +95,4 @@ document.addEventListener('DOMContentLoaded', () => {
     const closePdf = document.getElementById('close-pdf');
     if (closePdf) {
         closePdf.addEventListener('click', () => {
-            document.getElementById('pdf-viewer').style.display = 'none';
-        });
-    }
-
-    getSongList();
-});
+            const pdfViewer
