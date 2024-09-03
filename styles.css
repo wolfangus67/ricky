@@ -1,61 +1,51 @@
 body {
-    font-family: 'Arial', sans-serif;
-    background-color: #f0e6d2;
+    font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
+    background-color: #f0e6d2;
 }
 
 header {
     background-color: #8B4513;
-    color: #fff;
+    color: white;
     text-align: center;
-    padding: 20px 0;
+    padding: 1em;
 }
 
 #ukulele-neck {
     width: 300px;
     margin: 20px auto;
     background-color: #D2691E;
-    border-radius: 10px 10px 0 0;
+    border-radius: 10px;
     padding: 20px;
     box-shadow: 0 0 10px rgba(0,0,0,0.5);
 }
 
 .song {
-    margin: 20px 0;
+    margin: 10px 0;
     padding: 10px;
     background-color: rgba(255, 255, 255, 0.1);
     border-radius: 5px;
 }
 
 .song h2 {
-    color: #fff;
-    margin: 0 0 10px 0;
-    font-size: 18px;
+    margin: 0;
+    color: white;
 }
 
-.view-pdf, .view-tutorial {
-    display: block;
-    width: 100%;
-    padding: 10px;
-    margin: 5px 0;
+button {
     background-color: #F4A460;
     border: none;
-    border-radius: 5px;
     color: white;
-    text-decoration: none;
-    transition: all 0.3s;
+    padding: 10px;
+    margin: 5px;
+    border-radius: 5px;
     cursor: pointer;
+    transition: background-color 0.3s;
 }
 
-.view-pdf:hover, .view-tutorial:hover {
+button:hover {
     background-color: #CD853F;
-}
-
-.fret {
-    height: 2px;
-    background-color: #8B4513;
-    margin: 10px 0;
 }
 
 #pdf-viewer {
@@ -64,25 +54,18 @@ header {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.8);
+    background-color: rgba(0, 0, 0, 0.8);
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
 }
 
-#close-pdf {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    padding: 5px 10px;
-    background: #fff;
-    border: none;
-    cursor: pointer;
+#pdf-controls {
+    margin-bottom: 10px;
 }
 
-#loading {
-    color: #fff;
-    font-size: 18px;
-    margin-bottom: 10px;
+#pdf-render {
+    max-width: 100%;
+    max-height: 80vh;
 }
