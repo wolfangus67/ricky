@@ -1,84 +1,50 @@
+// translations.js
+
 export const translations = {
-    'fr': {
-        'title': 'Tablatures Ukulélé',
-        'viewPdf': 'Voir la tablature PDF',
-        'viewTutorial': 'Voir le tuto',
-        'playAudio': 'Lecture',
-        'stopAudio': 'Stop',
-        'searchPlaceholder': 'Rechercher une chanson ou un artiste',
-        'searchButton': 'Rechercher',
-        'prevPage': 'Page précédente',
-        'nextPage': 'Page suivante',
-        'close': 'Fermer',
-        'pageOf': 'Page {current} sur {total}'
+    fr: {
+        viewPdf: "Voir PDF",
+        downloadPdf: "Télécharger PDF",
+        viewTutorial: "Voir le tutoriel",
+        playAudio: "Jouer l'audio",
+        stopAudio: "Arrêter l'audio",
+        searchPlaceholder: "Rechercher une chanson ou un artiste",
+        searchButton: "Rechercher",
+        noResults: "Aucun résultat trouvé",
+        errorLoading: "Erreur lors du chargement des chansons",
+        retry: "Réessayer",
+        loading: "Chargement...",
+        prevPage: "Page précédente",
+        nextPage: "Page suivante",
+        closePdf: "Fermer le PDF"
     },
-    'en': {
-        'title': 'Ukulele Tabs',
-        'viewPdf': 'View PDF Tab',
-        'viewTutorial': 'View Tutorial',
-        'playAudio': 'Play',
-        'stopAudio': 'Stop',
-        'searchPlaceholder': 'Search for a song or artist',
-        'searchButton': 'Search',
-        'prevPage': 'Previous Page',
-        'nextPage': 'Next Page',
-        'close': 'Close',
-        'pageOf': 'Page {current} of {total}'
-    },
-    'es': {
-        'title': 'Tablaturas de Ukulele',
-        'viewPdf': 'Ver tablatura PDF',
-        'viewTutorial': 'Ver tutorial',
-        'playAudio': 'Reproducir',
-        'stopAudio': 'Detener',
-        'searchPlaceholder': 'Buscar una canción o artista',
-        'searchButton': 'Buscar',
-        'prevPage': 'Página anterior',
-        'nextPage': 'Página siguiente',
-        'close': 'Cerrar',
-        'pageOf': 'Página {current} de {total}'
+    en: {
+        viewPdf: "View PDF",
+        downloadPdf: "Download PDF",
+        viewTutorial: "View Tutorial",
+        playAudio: "Play Audio",
+        stopAudio: "Stop Audio",
+        searchPlaceholder: "Search for a song or artist",
+        searchButton: "Search",
+        noResults: "No results found",
+        errorLoading: "Error loading songs",
+        retry: "Retry",
+        loading: "Loading...",
+        prevPage: "Previous Page",
+        nextPage: "Next Page",
+        closePdf: "Close PDF"
     }
 };
 
+let currentLanguage = 'fr';
+
 export function setLanguage(lang) {
-    const elementsToTranslate = {
-        'main-title': 'title',
-        'search-input': 'searchPlaceholder',
-        'search-button': 'searchButton',
-        'prev-page': 'prevPage',
-        'next-page': 'nextPage',
-        'close-pdf': 'close'
-    };
-
-    Object.entries(elementsToTranslate).forEach(([elementId, translationKey]) => {
-        const element = document.getElementById(elementId);
-        if (element) {
-            if (elementId === 'search-input') {
-                element.setAttribute('placeholder', translations[lang][translationKey]);
-            } else {
-                element.textContent = translations[lang][translationKey];
-            }
-        }
-    });
-
-    document.querySelectorAll('.view-pdf').forEach(button => {
-        button.textContent = translations[lang].viewPdf;
-    });
-    document.querySelectorAll('.view-tutorial').forEach(button => {
-        button.textContent = translations[lang].viewTutorial;
-    });
-    document.querySelectorAll('.play-audio').forEach(button => {
-        if (button.textContent === translations[lang].stopAudio) {
-            button.textContent = translations[lang].stopAudio;
-        } else {
-            button.textContent = translations[lang].playAudio;
-        }
-    });
+    currentLanguage = lang;
 }
 
-export function translate(key, lang = 'fr') {
+export function translate(key, lang = currentLanguage) {
     if (translations[lang] && translations[lang][key]) {
         return translations[lang][key];
     }
-    return key; // Retourne la clé si aucune traduction n'est trouvée
+    console.warn(`Translation not found for key "${key}" in language "${lang}"`);
+    return key;
 }
