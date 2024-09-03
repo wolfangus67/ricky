@@ -15,6 +15,7 @@ export async function initializePdfViewer() {
         pdfjsLib.GlobalWorkerOptions.workerSrc = './pdfjs/pdf.worker.mjs';
     } catch (error) {
         console.error('Error initializing PDF.js:', error);
+        showErrorMessage('Erreur lors de l\'initialisation du visualiseur PDF.');
     }
 }
 
@@ -33,6 +34,7 @@ export async function openPdfViewer(pdfUrl) {
         setupPdfControls();
     } catch (error) {
         console.error('Error loading PDF:', error);
+        showErrorMessage('Erreur lors du chargement du PDF.');
     }
 }
 
@@ -103,6 +105,13 @@ function closePdfViewer() {
     pageNum = 1;
     pageRendering = false;
     pageNumPending = null;
+}
+
+function showErrorMessage(message) {
+    const errorElement = document.createElement('div');
+    errorElement.className = 'error-message';
+    errorElement.textContent = message;
+    document.body.appendChild(errorElement);
 }
 
 // Fonction pour changer le zoom
