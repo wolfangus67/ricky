@@ -5,7 +5,7 @@ import { initializeAudioPlayer, toggleAudio, setCurrentLanguage } from './audio.
 import { openYoutubeViewer } from './tutorial.js';
 import { translations, setLanguage, translate } from './translations.js';
 import { initializeSearch, updateSearchTranslation } from './search.js';
-import { gapiLoaded, gisLoaded, createSongElement } from './gdrive.js';
+import { gapiLoaded, gisLoaded } from './gdrive.js';
 
 let currentLang = 'fr';
 
@@ -31,6 +31,35 @@ function initializeGoogleDrive() {
     gisLoaded();
 }
 
+function createSongElement(songName, pdfUrl, isGithub = true) {
+    const songElement = document.createElement('div');
+    songElement.className = 'song';
+
+    let pdfButton;
+    if (isGithub) {
+        pdfButton = `<button class="view-pdf" data-translate="viewPdf">${translate('viewPdf', currentLang)}</button>`;
+    } else {
+        pdfButton = `<a href="${pdfUrl}" target="_blank" class="download-pdf" data-translate="downloadPdf">${translate('downloadPdf', currentLang)}</a>`;
+    }
+
+    songElement.innerHTML = `
+        <h2>${songName}</h2>
+        <div class="button-container">
+            ${pdfButton}
+            <button class="view-tutorial" data-translate="viewTutorial">${translate('viewTutorial', currentLang)}</button>
+            <button class="play-audio" data-translate="playAudio">${translate('playAudio', currentLang)}</button>
+        </div>
+    `;
+
+    if (isGithub) {
+        songElement.querySelector('.view-pdf').addEventListener('click', () => openPdfViewer(pdfUrl));
+    }
+    songElement.querySelector('.view-tutorial').addEventListener('click', () => openYoutubeViewer(songName));
+    songElement.querySelector('.play-audio').addEventListener('click', (e) => toggleAudio(songName, e.target));
+
+    return songElement;
+}
+
 async function loadSongsFromGitHub() {
     try {
         const response = await fetch('https://api.github.com/repos/wolfangus67/ricky/contents/songs');
@@ -45,7 +74,7 @@ async function loadSongsFromGitHub() {
             if (file.name.endsWith('.pdf')) {
                 const songName = file.name.replace('.pdf', '').replace(/_/g, ' ');
                 const pdfUrl = `https://wolfangus67.github.io/ricky/songs/${encodeURIComponent(file.name)}`;
-                const songElement = createSongElement(songName, pdfUrl);
+                const songElement = createSongElement(songName, pdfUrl, true);
                 ukuleleNeck.appendChild(songElement);
             }
         });
