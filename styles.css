@@ -20,7 +20,7 @@ header {
     display: flex;
     align-items: center;
     justify-content: center; /* Pour centrer le titre dans l'en-tête */
-    font-size: 30px; /* Ajustez selon vos préférences */
+    font-size: 28px; /* Ajustez selon vos préférences */
     margin: 0; /* Pour supprimer les marges par défaut du h1 */
 }
 
