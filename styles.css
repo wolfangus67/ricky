@@ -88,25 +88,27 @@ button:hover {
 }
 #suggestions-list {
     position: absolute;
-    background-color: white;
-    border: 1px solid #ddd;
+    background-color: #f9f9f9; /* Couleur de fond pour les suggestions */
+    border: 1px solid #ccc; /* Bordure pour délimiter la liste */
     max-height: 200px;
     overflow-y: auto;
     list-style-type: none;
     padding: 0;
     margin: 0;
-    width: 100%;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    width: calc(100% - 20px); /* Ajuster la largeur pour les marges */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Ombre pour un effet de profondeur */
     z-index: 1000;
+    border-radius: 4px; /* Coins arrondis */
 }
 
 #suggestions-list li {
     padding: 10px;
     cursor: pointer;
+    color: #333; /* Couleur du texte */
 }
 
 #suggestions-list li:hover {
-    background-color: #f0f0f0;
+    background-color: #e0e0e0; /* Couleur de fond au survol */
 }
 
 #search-container {
