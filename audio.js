@@ -1,4 +1,4 @@
-// audio.js
+import { translations } from './translations.js';
 
 const API_KEY = 'AIzaSyDiFuUIrm1WXjp9slhwMl4G4R23kssEwr0'; // Remplacez par votre clé API sécurisée
 
