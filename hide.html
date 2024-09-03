@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Télécharger un fichier PDF</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        .upload-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        #file-input {
+            display: none;
+        }
+        .upload-btn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .upload-btn:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="upload-container">
+        <h2>Télécharger un fichier PDF</h2>
+        <input type="file" id="file-input" accept=".pdf">
+        <label for="file-input" class="upload-btn">Choisir un fichier</label>
+        <p id="file-name"></p>
+    </div>
+
+    <script>
+        document.getElementById('file-input').addEventListener('change', function(e) {
+            var fileName = e.target.files[0].name;
+            document.getElementById('file-name').textContent = 'Fichier sélectionné : ' + fileName;
+            
+            // Ici, vous pouvez ajouter du code pour gérer le téléchargement du fichier
+            // Par exemple, afficher un message de succès
+            alert('Fichier "' + fileName + '" sélectionné avec succès!');
+            
+            // Note: Le téléchargement réel vers GitHub nécessiterait une API ou un backend
+        });
+    </script>
+</body>
+</html>
