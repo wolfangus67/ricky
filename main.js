@@ -9,8 +9,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     await initializePdfViewer();
     initializeAudioPlayer();
     setLanguage('fr'); // Initialisez la langue par défaut
-    loadSongs();
+    await loadSongs();
     setupLanguageSelector();
+    updateTranslations();
 });
 
 function setupLanguageSelector() {
@@ -39,6 +40,11 @@ async function loadSongs() {
         const files = await response.json();
         const ukuleleNeck = document.getElementById('ukulele-neck');
 
+        if (!ukuleleNeck) {
+            console.error("L'élément 'ukulele-neck' n'a pas été trouvé.");
+            return;
+        }
+
         files.forEach((file) => {
             if (file.name.endsWith('.pdf')) {
                 const songName = file.name.replace('.pdf', '').replace(/_/g, ' ');
@@ -48,19 +54,28 @@ async function loadSongs() {
             }
         });
     } catch (error) {
-        console.error('Error fetching song list:', error);
+        console.error('Erreur lors du chargement de la liste des chansons:', error);
+        // Afficher un message d'erreur à l'utilisateur
+        const errorMessage = document.createElement('p');
+        errorMessage.textContent = "Une erreur s'est produite lors du chargement des chansons. Veuillez réessayer plus tard.";
+        document.body.appendChild(errorMessage);
     }
 }
 
 function createSongElement(songName, pdfUrl) {
     const songElement = document.createElement('div');
     songElement.className = 'song';
+
+    const viewPdfText = translate('view_pdf');
+    const viewTutorialText = translate('view_tutorial');
+    const playAudioText = translate('play_audio');
+
     songElement.innerHTML = `
         <h2>${songName}</h2>
         <div class="button-container">
-            <button class="view-pdf" data-translate="view_pdf">${translate('view_pdf')}</button>
-            <button class="view-tutorial" data-translate="view_tutorial">${translate('view_tutorial')}</button>
-            <button class="play-audio" data-translate="play_audio">${translate('play_audio')}</button>
+            <button class="view-pdf" data-translate="view_pdf">${viewPdfText}</button>
+            <button class="view-tutorial" data-translate="view_tutorial">${viewTutorialText}</button>
+            <button class="play-audio" data-translate="play_audio">${playAudioText}</button>
         </div>
     `;
 
