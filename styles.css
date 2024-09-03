@@ -77,7 +77,9 @@ header {
     color: #4A2C2A;
     font-size: 16px;
 }
-
+#search-button {
+    display: none;
+}
 
 
 /* Liste de suggestions */
