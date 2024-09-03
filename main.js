@@ -67,16 +67,12 @@ function initializeGoogleDrive() {
     gisLoaded();
 }
 
-function createSongElement(songName, pdfUrl, isGithub = true) {
+function createSongElement(songName, pdfUrl) {
     const songElement = document.createElement('div');
     songElement.className = 'song';
 
-    let pdfButton;
-    if (isGithub) {
-        pdfButton = `<button class="view-pdf" data-translate="viewPdf">${translate('viewPdf', currentLang)}</button>`;
-    } else {
-        pdfButton = `<a href="${pdfUrl}" target="_blank" class="download-pdf" data-translate="downloadPdf">${translate('downloadPdf', currentLang)}</a>`;
-    }
+    // Créer uniquement le lien de téléchargement
+    const pdfButton = `<a href="${pdfUrl}" target="_blank" class="download-pdf" data-translate="downloadPdf">${translate('downloadPdf', currentLang)}</a>`;
 
     songElement.innerHTML = `
         <h2>${songName}</h2>
@@ -87,9 +83,7 @@ function createSongElement(songName, pdfUrl, isGithub = true) {
         </div>
     `;
 
-    if (isGithub) {
-        songElement.querySelector('.view-pdf').addEventListener('click', () => openPdfViewer(pdfUrl));
-    }
+    // Pas besoin de l'écouteur d'événements pour le bouton "Voir PDF"
     songElement.querySelector('.view-tutorial').addEventListener('click', () => openYoutubeViewer(songName));
     songElement.querySelector('.play-audio').addEventListener('click', (e) => toggleAudio(songName, e.target));
 
@@ -110,7 +104,7 @@ async function loadSongsFromGitHub() {
             if (file.name.endsWith('.pdf')) {
                 const songName = file.name.replace('.pdf', '').replace(/_/g, ' ');
                 const pdfUrl = `https://wolfangus67.github.io/ricky/songs/${encodeURIComponent(file.name)}`;
-                const songElement = createSongElement(songName, pdfUrl, true);
+                const songElement = createSongElement(songName, pdfUrl);
                 ukuleleNeck.appendChild(songElement);
             }
         });
