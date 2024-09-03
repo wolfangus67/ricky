@@ -8,7 +8,7 @@
 </head>
 <body>
     <header>
-        <h1 id="main-title">Tablatures Ukulélé alpha 1</h1>
+        <h1 id="main-title">Tablatures Ukulélé</h1>
         <div id="language-selector">
             <img src="fr-flag.png" alt="Français" data-lang="fr">
             <img src="en-flag.png" alt="English" data-lang="en">
@@ -19,9 +19,13 @@
             <button id="search-button">Rechercher</button>
         </div>
     </header>
-    <div id="ukulele-neck">
-        <!-- Les chansons seront chargées ici -->
-    </div>
+
+    <main>
+        <div id="ukulele-neck">
+            <!-- Les chansons seront chargées ici dynamiquement -->
+        </div>
+    </main>
+
     <div id="pdf-viewer" style="display: none;">
         <div id="pdf-controls">
             <button id="prev-page">Page précédente</button>
@@ -31,7 +35,9 @@
         </div>
         <canvas id="pdf-render"></canvas>
     </div>
+
     <div id="player" style="display: none;"></div>
+
     <script type="module" src="main.js"></script>
 </body>
 </html>
