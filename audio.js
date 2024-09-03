@@ -1,10 +1,12 @@
-// audio.js
+import { translations } from './translations.js';
 
 const API_KEY = 'AIzaSyDiFuUIrm1WXjp9slhwMl4G4R23kssEwr0';
 
 let player;
 let currentVideoId = null;
 let isPlaying = false;
+let currentPlayingButton = null;
+let currentLang = 'fr'; // Langue par défaut
 
 export function initializeAudioPlayer() {
     loadYouTubeAPI();
@@ -37,14 +39,18 @@ function onPlayerReady(event) {
 }
 
 function onPlayerStateChange(event) {
-    if (event.data == YT.PlayerState.ENDED) {
+    if (event.data == YT.PlayerState.ENDED || event.data == YT.PlayerState.PAUSED) {
         isPlaying = false;
         updateButtonState();
     }
 }
 
 export async function toggleAudio(songName, button) {
-    if (isPlaying) {
+    if (currentPlayingButton && currentPlayingButton !== button) {
+        currentPlayingButton.textContent = translations[currentLang].playAudio;
+    }
+
+    if (isPlaying && currentPlayingButton === button) {
         player.pauseVideo();
         isPlaying = false;
     } else {
@@ -61,17 +67,14 @@ export async function toggleAudio(songName, button) {
             return;
         }
     }
-    updateButtonState(button);
+    currentPlayingButton = button;
+    updateButtonState();
 }
 
-function updateButtonState(button) {
-    if (button) {
-        button.textContent = isPlaying ? 'Stop' : 'Lecture';
+function updateButtonState() {
+    if (currentPlayingButton) {
+        currentPlayingButton.textContent = isPlaying ? translations[currentLang].stopAudio : translations[currentLang].playAudio;
     }
-    // Mettre à jour tous les boutons si nécessaire
-    document.querySelectorAll('.play-audio').forEach(btn => {
-        btn.textContent = btn === button && isPlaying ? 'Stop' : 'Lecture';
-    });
 }
 
 async function getYouTubeVideoId(query) {
@@ -79,3 +82,6 @@ async function getYouTubeVideoId(query) {
     const data = await response.json();
     return data.items[0]?.id.videoId;
 }
+
+export function setCurrentLanguage(lang) {
+    currentLang =
