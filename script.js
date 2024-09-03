@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     const songName = file.name.replace('.pdf', '').replace(/_/g, ' ');
                     const songElement = document.createElement('section');
                     songElement.className = 'song';
-                    const fileUrl = `https://github.com/wolfangus67/ricky/raw/main/songs/${file.name}`;
+                    const fileUrl = file.download_url;
                     songElement.innerHTML = `
                         <h2>${songName}</h2>
                         <button class="view-pdf" data-pdf-url="${fileUrl}">Voir la tablature PDF</button>
@@ -41,33 +41,43 @@ document.addEventListener('DOMContentLoaded', () => {
     function openPdfViewer(url) {
         const iframe = document.getElementById('pdf-iframe');
         const loadingIndicator = document.getElementById('loading');
+        const pdfViewer = document.getElementById('pdf-viewer');
         
         loadingIndicator.style.display = 'block';
+        pdfViewer.style.display = 'block';
         
         iframe.onload = function() {
             loadingIndicator.style.display = 'none';
         };
         
-        iframe.src = `https://docs.google.com/viewer?url=${encodeURIComponent(url)}&embedded=true`;
-        document.getElementById('pdf-viewer').style.display = 'block';
+        iframe.src = url;
     }
 
     function openYoutubeViewer(songName) {
         const iframe = document.getElementById('youtube-iframe');
+        const youtubeViewer = document.getElementById('youtube-viewer');
         const searchQuery = encodeURIComponent(`ricky somborn tutorial ${songName}`);
         iframe.src = `https://www.youtube.com/embed?listType=search&list=${searchQuery}`;
-        document.getElementById('youtube-viewer').style.display = 'block';
+        youtubeViewer.style.display = 'block';
     }
 
-    document.getElementById('close-pdf').addEventListener('click', () => {
-        document.getElementById('pdf-viewer').style.display = 'none';
-        document.getElementById('pdf-iframe').src = '';
-    });
+    const closePdf = document.getElementById('close-pdf');
+    if (closePdf) {
+        closePdf.addEventListener('click', () => {
+            const pdfViewer = document.getElementById('pdf-viewer');
+            pdfViewer.style.display = 'none';
+            document.getElementById('pdf-iframe').src = '';
+        });
+    }
 
-    document.getElementById('close-youtube').addEventListener('click', () => {
-        document.getElementById('youtube-viewer').style.display = 'none';
-        document.getElementById('youtube-iframe').src = '';
-    });
+    const closeYoutube = document.getElementById('close-youtube');
+    if (closeYoutube) {
+        closeYoutube.addEventListener('click', () => {
+            const youtubeViewer = document.getElementById('youtube-viewer');
+            youtubeViewer.style.display = 'none';
+            document.getElementById('youtube-iframe').src = '';
+        });
+    }
 
     getSongList();
 });
