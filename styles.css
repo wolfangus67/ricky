@@ -114,3 +114,27 @@ button:hover {
 #search-container {
     position: relative;
 }
+.song {
+    display: flex; /* Utilise Flexbox pour aligner les éléments */
+    align-items: center; /* Aligne verticalement au centre */
+    margin-bottom: 10px; /* Espace entre les chansons */
+}
+
+.song h2 {
+    margin-right: 15px; /* Espace à droite du titre */
+    flex-grow: 1; /* Permet au titre de prendre de l'espace disponible */
+}
+
+.song button {
+    background-color: #4CAF50; /* Couleur de fond verte */
+    color: white; /* Couleur du texte blanche */
+    border: none; /* Pas de bordure */
+    padding: 10px 15px; /* Espacement */
+    cursor: pointer; /* Curseur en forme de main */
+    margin-right: 10px; /* Espace à droite entre les boutons */
+    border-radius: 5px; /* Coins arrondis */
+}
+
+.song button:hover {
+    background-color: #45a049; /* Couleur de fond au survol */
+}
