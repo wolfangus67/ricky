@@ -1,4 +1,64 @@
-#youtube-viewer {
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f0e6d2;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background-color: #8B4513;
+    color: #fff;
+    text-align: center;
+    padding: 20px 0;
+}
+
+#ukulele-neck {
+    width: 300px;
+    margin: 20px auto;
+    background-color: #D2691E;
+    border-radius: 10px 10px 0 0;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+}
+
+.song {
+    margin: 20px 0;
+    padding: 10px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 5px;
+}
+
+.song h2 {
+    color: #fff;
+    margin: 0 0 10px 0;
+    font-size: 18px;
+}
+
+.view-pdf, .view-tutorial {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0;
+    background-color: #F4A460;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    text-decoration: none;
+    transition: all 0.3s;
+    cursor: pointer;
+}
+
+.view-pdf:hover, .view-tutorial:hover {
+    background-color: #CD853F;
+}
+
+.fret {
+    height: 2px;
+    background-color: #8B4513;
+    margin: 10px 0;
+}
+
+#pdf-viewer {
     position: fixed;
     top: 0;
     left: 0;
@@ -11,7 +71,7 @@
     justify-content: center;
 }
 
-#close-youtube {
+#close-pdf {
     position: absolute;
     top: 10px;
     right: 10px;
@@ -21,7 +81,8 @@
     cursor: pointer;
 }
 
-#youtube-iframe {
-    max-width: 90%;
-    max-height: 90%;
+#loading {
+    color: #fff;
+    font-size: 18px;
+    margin-bottom: 10px;
 }
