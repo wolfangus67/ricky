@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tablatures Ukulélé</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1 id="main-title">Tablatures Ukulélé alpha 1</h1>
+        <div id="language-selector">
+            <img src="fr-flag.png" alt="Français" data-lang="fr">
+            <img src="en-flag.png" alt="English" data-lang="en">
+            <img src="es-flag.png" alt="Español" data-lang="es">
+        </div>
+    </header>
+    <div id="ukulele-neck">
+        <!-- La liste des chansons sera générée ici -->
+    </div>
+    <div id="pdf-viewer" style="display: none;">
+        <div id="pdf-controls">
+            <button id="prev-page">Page précédente</button>
+            <span id="page-num"></span>
+            <button id="next-page">Page suivante</button>
+            <button id="close-pdf">Fermer</button>
+        </div>
+        <canvas id="pdf-render"></canvas>
+    </div>
+    <script type="module" src="script.js"></script>
+</body>
+</html>
