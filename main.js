@@ -1,7 +1,20 @@
 // Début des modifications pour Google Drive
 import { handleAuthClick } from './gdrive.js';
 // Fin des modifications pour Google Drive
-
+function setupLanguageSelector() {
+    const languageSelector = document.getElementById('language-selector');
+    if (languageSelector) {
+        languageSelector.addEventListener('click', (e) => {
+            if (e.target.tagName === 'IMG') {
+                const newLang = e.target.getAttribute('data-lang');
+                setLanguage(newLang);
+                updateAllTranslations();
+            }
+        });
+    } else {
+        console.error('Élément language-selector non trouvé');
+    }
+}
 import { openPdfViewer, initializePdfViewer } from './pdfViewer.js';
 import { initializeAudioPlayer, toggleAudio, setCurrentLanguage } from './audio.js';
 import { openYoutubeViewer } from './tutorial.js';
