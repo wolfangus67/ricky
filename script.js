@@ -7,6 +7,9 @@ const translations = {
         'title': 'Tablatures Ukulélé',
         'viewPdf': 'Voir la tablature PDF',
         'viewTutorial': 'Voir le tuto',
+        'playAudio': 'Lecture',
+        'searchPlaceholder': 'Rechercher une chanson ou un artiste',
+        'searchButton': 'Rechercher',
         'prevPage': 'Page précédente',
         'nextPage': 'Page suivante',
         'close': 'Fermer',
@@ -16,6 +19,9 @@ const translations = {
         'title': 'Ukulele Tabs',
         'viewPdf': 'View PDF Tab',
         'viewTutorial': 'View Tutorial',
+        'playAudio': 'Play',
+        'searchPlaceholder': 'Search for a song or artist',
+        'searchButton': 'Search',
         'prevPage': 'Previous Page',
         'nextPage': 'Next Page',
         'close': 'Close',
@@ -25,6 +31,9 @@ const translations = {
         'title': 'Tablaturas de Ukulele',
         'viewPdf': 'Ver tablatura PDF',
         'viewTutorial': 'Ver tutorial',
+        'playAudio': 'Reproducir',
+        'searchPlaceholder': 'Buscar una canción o artista',
+        'searchButton': 'Buscar',
         'prevPage': 'Página anterior',
         'nextPage': 'Página siguiente',
         'close': 'Cerrar',
@@ -44,14 +53,21 @@ function setLanguage(lang) {
     document.getElementById('next-page').textContent = translations[lang].nextPage;
     document.getElementById('close-pdf').textContent = translations[lang].close;
     
+    document.getElementById('search-input').setAttribute('placeholder', translations[lang].searchPlaceholder);
+    document.getElementById('search-button').textContent = translations[lang].searchButton;
+
     document.querySelectorAll('.view-pdf').forEach(button => {
         button.textContent = translations[lang].viewPdf;
     });
     document.querySelectorAll('.view-tutorial').forEach(button => {
         button.textContent = translations[lang].viewTutorial;
     });
+    document.querySelectorAll('.play-audio').forEach(button => {
+        button.textContent = translations[lang].playAudio;
+    });
 
     updatePageNumber();
+}
 }
 
 function updatePageNumber() {
