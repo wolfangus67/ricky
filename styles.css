@@ -1,19 +1,22 @@
 /* Styles généraux */
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Arial', sans-serif;
     margin: 0;
     padding: 20px;
-    background-color: #f0f0f0;
+    background-color: #f9f9f9; /* Couleur de fond claire */
 }
 
+/* En-tête */
 header {
-    background-color: #333;
+    background-color: #4A2C2A; /* Couleur sombre inspirée du bois */
     color: white;
     padding: 20px;
     text-align: center;
+    border-radius: 8px; /* Coins arrondis */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Ombre douce */
 }
 
-/* Styles pour le sélecteur de langue */
+/* Sélecteur de langue */
 #language-selector {
     margin-top: 10px;
 }
@@ -25,7 +28,7 @@ header {
     cursor: pointer;
 }
 
-/* Styles pour la barre de recherche */
+/* Barre de recherche */
 #search-container {
     margin-top: 20px;
     text-align: center;
@@ -36,28 +39,31 @@ header {
     width: 300px;
     border: 1px solid #ddd;
     border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Ombre légère */
 }
 
 #search-button {
     padding: 10px 20px;
-    background-color: #4CAF50;
+    background-color: #4CAF50; /* Vert doux */
     color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    margin-left: 10px; /* Espace entre le champ et le bouton */
 }
 
-/* Styles pour la liste des chansons */
+/* Liste des chansons */
 #ukulele-neck {
     margin-top: 20px;
 }
 
 .song {
-    background-color: white;
+    background-color: #fff; /* Fond blanc pour les chansons */
+    border: 1px solid #ccc; /* Bordure légère */
     border-radius: 5px;
     padding: 15px;
     margin-bottom: 20px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Ombre douce */
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -65,12 +71,13 @@ header {
 
 .song h2 {
     margin: 0 0 10px 0;
-    color: #333;
+    color: #4A2C2A; /* Couleur sombre pour le titre */
+    font-family: 'Georgia', serif; /* Police élégante pour le titre */
 }
 
 .button-container {
     display: flex;
-    gap: 10px;
+    gap: 10px; /* Espace entre les boutons */
 }
 
 .song button {
@@ -79,20 +86,21 @@ header {
     border-radius: 4px;
     cursor: pointer;
     font-size: 14px;
+    transition: background-color 0.3s ease; /* Transition douce pour le survol */
 }
 
 .view-pdf {
-    background-color: #4CAF50;
+    background-color: #4CAF50; /* Vert doux */
     color: white;
 }
 
 .view-tutorial {
-    background-color: #2196F3;
+    background-color: #2196F3; /* Bleu doux */
     color: white;
 }
 
 .play-audio {
-    background-color: #f44336;
+    background-color: #f44336; /* Rouge doux */
     color: white;
 }
 
@@ -117,13 +125,14 @@ header {
 #pdf-controls button {
     margin: 0 10px;
     padding: 10px 20px;
-    background-color: #4CAF50;
+    background-color: #4CAF50; /* Vert doux */
     color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
 }
 
+/* Canvas pour le PDF */
 #pdf-render {
     max-width: 90%;
     max-height: 80%;
