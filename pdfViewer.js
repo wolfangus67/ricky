@@ -33,8 +33,8 @@ export async function openPdfViewer(pdfUrl) {
         renderPage(pageNum);
         setupPdfControls();
     } catch (error) {
-        console.error('Error loading PDF:', error);
-        showErrorMessage('Erreur lors du chargement du PDF.');
+        console.error('Erreur lors du chargement du PDF:', error);
+        showErrorMessage('Erreur lors du chargement du PDF. Veuillez vérifier votre connexion et réessayer.');
     }
 }
 
@@ -112,17 +112,4 @@ function showErrorMessage(message) {
     errorElement.className = 'error-message';
     errorElement.textContent = message;
     document.body.appendChild(errorElement);
-}
-
-// Fonction pour changer le zoom
-export function changeZoom(zoomValue) {
-    scale = parseFloat(zoomValue);
-    renderPage(pageNum);
-}
-
-// Fonction pour rechercher dans le PDF
-export async function searchPdf(searchTerm) {
-    // Cette fonction nécessite une implémentation plus complexe
-    // qui dépend de la structure de votre application
-    console.log('Recherche de:', searchTerm);
 }
