@@ -1,3 +1,10 @@
+// gdrive.js
+
+import { openPdfViewer } from './pdfViewer.js';
+import { openYoutubeViewer } from './tutorial.js';
+import { toggleAudio } from './audio.js';
+import { translate } from './translations.js';
+
 // Constantes pour l'API Google Drive
 const CLIENT_ID = '234810356117-bc5je2lea6h1pri38gv9jdlh8b6uc7nu.apps.googleusercontent.com';
 const API_KEY = 'AIzaSyDiFuUIrm1WXjp9slhwMl4G4R23kssEwr0';
@@ -9,6 +16,7 @@ const FOLDER_ID = '13W-w8jsXQhfMczbu2-vLUfp8JkwDY7mU';
 let gapiInited = false;
 let gisInited = false;
 let tokenClient;
+let currentLang = 'fr';
 
 function gapiLoaded() {
     gapi.load('client', initializeGapiClient);
@@ -76,9 +84,15 @@ function createSongElement(songName, pdfUrl) {
     songElement.innerHTML = `
         <h2>${songName}</h2>
         <div class="button-container">
-            <a href="${pdfUrl}" target="_blank" class="view-pdf">Voir PDF</a>
+            <button class="view-pdf" data-translate="viewPdf">${translate('viewPdf', currentLang)}</button>
+            <button class="view-tutorial" data-translate="viewTutorial">${translate('viewTutorial', currentLang)}</button>
+            <button class="play-audio" data-translate="playAudio">${translate('playAudio', currentLang)}</button>
         </div>
     `;
+
+    songElement.querySelector('.view-pdf').addEventListener('click', () => openPdfViewer(pdfUrl));
+    songElement.querySelector('.view-tutorial').addEventListener('click', () => openYoutubeViewer(songName));
+    songElement.querySelector('.play-audio').addEventListener('click', (e) => toggleAudio(songName, e.target));
 
     return songElement;
 }
@@ -90,5 +104,4 @@ function showErrorMessage(message) {
     document.body.appendChild(errorElement);
 }
 
-// Exporter les fonctions pour les utiliser dans d'autres fichiers
-export { gapiLoaded, gisLoaded };
+export { gapiLoaded, gisLoaded, createSongElement };
