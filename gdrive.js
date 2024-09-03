@@ -2,7 +2,7 @@
 
 // Constantes pour l'API Google Drive
 const CLIENT_ID = '234810356117-bc5je2lea6h1pri38gv9jdlh8b6uc7nu.apps.googleusercontent.com';
-const API_KEY = 'AIzaSyDiFuUIrm1WXjp9slhwMl4G4R23kssEwr0'; // Remplacez par votre clé API réelle
+const API_KEY = 'AIzaSyDiFuUIrm1WXjp9slhwMl4G4R23kssEwr0';
 const DISCOVERY_DOCS = ["https://www.googleapis.com/discovery/v1/apis/drive/v3/rest"];
 const SCOPES = 'https://www.googleapis.com/auth/drive.metadata.readonly';
 
@@ -10,6 +10,7 @@ const FOLDER_ID = '13W-w8jsXQhfMczbu2-vLUfp8JkwDY7mU';
 
 let gapiInited = false;
 let gisInited = false;
+let tokenClient;
 
 function gapiLoaded() {
     gapi.load('client', initializeGapiClient);
@@ -84,19 +85,4 @@ function createSongElement(songName, pdfUrl) {
     songElement.innerHTML = `
         <h2>${songName}</h2>
         <div class="button-container">
-            <a href="${pdfUrl}" target="_blank" class="view-pdf">Voir PDF</a>
-        </div>
-    `;
-
-    return songElement;
-}
-
-function showErrorMessage(message) {
-    const errorElement = document.createElement('div');
-    errorElement.className = 'error-message';
-    errorElement.textContent = message;
-    document.body.appendChild(errorElement);
-}
-
-// Exporter les fonctions pour les utiliser dans d'autres fichiers
-export { gapiLoaded, gisLoaded, handleAuthClick };
+            <
