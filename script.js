@@ -3,12 +3,12 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             const response = await fetch('https://api.github.com/repos/wolfangus67/ricky/contents/songs');
             const files = await response.json();
-            const songList = document.getElementById('song-list');
+            const ukuleleNeck = document.getElementById('ukulele-neck');
 
-            files.forEach(file => {
+            files.forEach((file, index) => {
                 if (file.name.endsWith('.pdf')) {
                     const songName = file.name.replace('.pdf', '').replace(/_/g, ' ');
-                    const songElement = document.createElement('section');
+                    const songElement = document.createElement('div');
                     songElement.className = 'song';
                     const fileUrl = file.download_url;
                     songElement.innerHTML = `
@@ -16,7 +16,14 @@ document.addEventListener('DOMContentLoaded', () => {
                         <button class="view-pdf" data-pdf-url="${fileUrl}">Voir la tablature PDF</button>
                         <button class="view-tutorial" data-song-name="${songName}">Voir le tuto</button>
                     `;
-                    songList.appendChild(songElement);
+                    ukuleleNeck.appendChild(songElement);
+
+                    // Ajouter une frette après chaque chanson (sauf la dernière)
+                    if (index < files.length - 1) {
+                        const fret = document.createElement('div');
+                        fret.className = 'fret';
+                        ukuleleNeck.appendChild(fret);
+                    }
                 }
             });
 
@@ -44,7 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const pdfViewer = document.getElementById('pdf-viewer');
         
         loadingIndicator.style.display = 'block';
-        pdfViewer.style.display = 'block';
+        pdfViewer.style.display = 'flex';
         
         iframe.onload = function() {
             loadingIndicator.style.display = 'none';
@@ -53,11 +60,11 @@ document.addEventListener('DOMContentLoaded', () => {
         iframe.src = url;
     }
 
- function openYoutubeViewer(songName) {
-    const searchQuery = encodeURIComponent(`ricky somborn tutorial ${songName}`);
-    const youtubeSearchUrl = `https://www.youtube.com/results?search_query=${searchQuery}`;
-    window.open(youtubeSearchUrl, '_blank');
-}
+    function openYoutubeViewer(songName) {
+        const searchQuery = encodeURIComponent(`ricky somborn tutorial ${songName}`);
+        const youtubeSearchUrl = `https://www.youtube.com/results?search_query=${searchQuery}`;
+        window.open(youtubeSearchUrl, '_blank');
+    }
 
     const closePdf = document.getElementById('close-pdf');
     if (closePdf) {
@@ -65,15 +72,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const pdfViewer = document.getElementById('pdf-viewer');
             pdfViewer.style.display = 'none';
             document.getElementById('pdf-iframe').src = '';
-        });
-    }
-
-    const closeYoutube = document.getElementById('close-youtube');
-    if (closeYoutube) {
-        closeYoutube.addEventListener('click', () => {
-            const youtubeViewer = document.getElementById('youtube-viewer');
-            youtubeViewer.style.display = 'none';
-            document.getElementById('youtube-iframe').src = '';
         });
     }
 
