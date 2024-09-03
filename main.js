@@ -3,14 +3,38 @@
 import { openPdfViewer, initializePdfViewer } from './pdfViewer.js';
 import { initializeAudioPlayer, toggleAudio } from './audio.js';
 import { openYoutubeViewer } from './tutorial.js';
-import { setLanguage, initializeTranslations } from './translations.js'; // Importation du script de traduction
+import { setLanguage, translate } from './translations.js'; // Modifié ici
+
+let currentLanguage = 'fr'; // Langue par défaut
 
 document.addEventListener('DOMContentLoaded', async () => {
     await initializePdfViewer();
     initializeAudioPlayer();
-    await initializeTranslations(); // Initialisation des traductions
+    setLanguage(currentLanguage); // Initialise la langue
     loadSongs();
+    setupLanguageSelector();
 });
+
+function setupLanguageSelector() {
+    const languageSelector = document.getElementById('language-selector');
+    if (languageSelector) {
+        languageSelector.addEventListener('click', (e) => {
+            if (e.target.tagName === 'IMG') {
+                currentLanguage = e.target.getAttribute('data-lang');
+                setLanguage(currentLanguage);
+                updateTranslations();
+            }
+        });
+    }
+}
+
+function updateTranslations() {
+    // Mettez à jour tous les éléments traduits ici
+    document.querySelectorAll('[data-translate]').forEach(element => {
+        const key = element.getAttribute('data-translate');
+        element.textContent = translate(key);
+    });
+}
 
 async function loadSongs() {
     try {
@@ -37,22 +61,15 @@ function createSongElement(songName, pdfUrl) {
     songElement.innerHTML = `
         <h2>${songName}</h2>
         <div class="button-container">
-            <button class="view-pdf">${translate('view_pdf')}</button>
-            <button class="view-tutorial">${translate('view_tutorial')}</button>
-            <button class="play-audio">${translate('play_audio')}</button>
+            <button class="view-pdf" data-translate="view_pdf">${translate('view_pdf')}</button>
+            <button class="view-tutorial" data-translate="view_tutorial">${translate('view_tutorial')}</button>
+            <button class="play-audio" data-translate="play_audio">${translate('play_audio')}</button>
         </div>
     `;
 
-    songElement.querySelector('.view-pdf').addEventListener('click', () => {
-        openPdfViewer(pdfUrl);
-    });
+    songElement.querySelector('.view-pdf').addEventListener('click', () => openPdfViewer(pdfUrl));
     songElement.querySelector('.view-tutorial').addEventListener('click', () => openYoutubeViewer(songName));
     songElement.querySelector('.play-audio').addEventListener('click', (e) => toggleAudio(songName, e.target));
 
     return songElement;
-}
-
-// Fonction pour traduire le texte
-function translate(key) {
-    return translations[currentLanguage][key] || key; // Utilise la clé pour obtenir la traduction
 }
