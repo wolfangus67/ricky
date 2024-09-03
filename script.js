@@ -8,30 +8,17 @@ let currentPage = 1;
 let pageCount = 0;
 let currentLang = 'fr';
 
-function setLanguage(lang) {
-    currentLang = lang;
-    document.getElementById('main-title').textContent = translations[lang].title;
-    document.getElementById('prev-page').textContent = translations[lang].prevPage;
-    document.getElementById('next-page').textContent = translations[lang].nextPage;
-    document.getElementById('close-pdf').textContent = translations[lang].close;
-    
-    document.querySelectorAll('.view-pdf').forEach(button => {
-        button.textContent = translations[lang].viewPdf;
-    });
-    document.querySelectorAll('.view-tutorial').forEach(button => {
-        button.textContent = translations[lang].viewTutorial;
-    });
-
-    updatePageNumber();
+// Définissez ces fonctions avant de les utiliser
+function openPdfViewer(url) {
+    // Votre code pour ouvrir le PDF
+    console.log("Ouverture du PDF:", url);
+    // ... le reste de votre code pour afficher le PDF
 }
 
-function updatePageNumber() {
-    const pageNumElement = document.getElementById('page-num');
-    if (pageNumElement) {
-        pageNumElement.textContent = translations[currentLang].pageOf
-            .replace('{current}', currentPage)
-            .replace('{total}', pageCount);
-    }
+function openYoutubeViewer(songName) {
+    const searchQuery = encodeURIComponent(`ricky somborn tutorial ${songName}`);
+    const youtubeSearchUrl = `https://www.youtube.com/results?search_query=${searchQuery}`;
+    window.open(youtubeSearchUrl, '_blank');
 }
 
 async function getSongList() {
@@ -79,13 +66,8 @@ async function getSongList() {
     }
 }
 
-// ... (le reste de votre code pour openPdfViewer, renderPage, etc.)
+// ... le reste de votre code
 
-document.getElementById('language-selector').addEventListener('click', (e) => {
-    if (e.target.tagName === 'IMG') {
-        setLanguage(e.target.getAttribute('data-lang'));
-    }
-});
-
+// Appel initial
 getSongList();
 setLanguage('fr'); // Langue par défaut
