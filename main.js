@@ -1,37 +1,8 @@
 // main.js
 
-import { openPdfViewer, initializePdfViewer } from './pdfViewer.js';
-import { initializeAudioPlayer, toggleAudio } from './audio.js';
-import { openYoutubeViewer } from './tutorial.js';
-
-document.addEventListener('DOMContentLoaded', async () => {
-    await initializePdfViewer();
-    initializeAudioPlayer();
-    setLanguage(currentLanguage); // Initialise la langue
+document.addEventListener('DOMContentLoaded', () => {
     loadSongs();
-    setupLanguageSelector();
 });
-
-function setupLanguageSelector() {
-    const languageSelector = document.getElementById('language-selector');
-    if (languageSelector) {
-        languageSelector.addEventListener('click', (e) => {
-            if (e.target.tagName === 'IMG') {
-                currentLanguage = e.target.getAttribute('data-lang');
-                setLanguage(currentLanguage);
-                updateTranslations();
-            }
-        });
-    }
-}
-
-function updateTranslations() {
-    // Mettez à jour tous les éléments traduits ici
-    document.querySelectorAll('[data-translate]').forEach(element => {
-        const key = element.getAttribute('data-translate');
-        element.textContent = translate(key);
-    });
-}
 
 async function loadSongs() {
     try {
@@ -58,15 +29,15 @@ function createSongElement(songName, pdfUrl) {
     songElement.innerHTML = `
         <h2>${songName}</h2>
         <div class="button-container">
-            <button class="view-pdf" data-translate="view_pdf">${translate('view_pdf')}</button>
-            <button class="view-tutorial" data-translate="view_tutorial">${translate('view_tutorial')}</button>
-            <button class="play-audio" data-translate="play_audio">${translate('play_audio')}</button>
+            <button class="view-pdf">Voir la tablature PDF</button>
+            <button class="view-tutorial">Voir le tuto</button>
+            <button class="play-audio">Lecture</button>
         </div>
     `;
 
-    songElement.querySelector('.view-pdf').addEventListener('click', () => openPdfViewer(pdfUrl));
-    songElement.querySelector('.view-tutorial').addEventListener('click', () => openYoutubeViewer(songName));
-    songElement.querySelector('.play-audio').addEventListener('click', (e) => toggleAudio(songName, e.target));
+    songElement.querySelector('.view-pdf').addEventListener('click', () => console.log('Ouvrir PDF:', pdfUrl));
+    songElement.querySelector('.view-tutorial').addEventListener('click', () => console.log('Ouvrir tutoriel pour:', songName));
+    songElement.querySelector('.play-audio').addEventListener('click', () => console.log('Jouer audio pour:', songName));
 
     return songElement;
 }
