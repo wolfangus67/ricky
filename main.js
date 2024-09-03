@@ -1,17 +1,3 @@
-// Votre code JavaScript existant ici...
-
-// Début des modifications pour Google Drive
-import { handleAuthClick } from './gdrive.js';
-
-document.addEventListener('DOMContentLoaded', () => {
-    // Ajouter l'écouteur d'événement pour le bouton d'autorisation
-    document.getElementById('authorize_button').addEventListener('click', handleAuthClick);
-
-    // Votre code existant pour initialiser l'application...
-});
-// Fin des modifications pour Google Drive
-
-
 import { openPdfViewer, initializePdfViewer } from './pdfViewer.js';
 import { initializeAudioPlayer, toggleAudio, setCurrentLanguage } from './audio.js';
 import { openYoutubeViewer } from './tutorial.js';
