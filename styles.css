@@ -35,8 +35,8 @@ body {
 }
 
 .button-container button,
-.button-container a.download-pdf {
-    background-color: #4CAF50;
+.button-container a {
+    background-color: #4CAF50; /* Couleur de fond par défaut */
     border: none;
     color: white;
     padding: 10px 15px;
@@ -51,34 +51,41 @@ body {
 }
 
 .button-container button:hover,
-.button-container a.download-pdf:hover {
-    background-color: #45a049;
+.button-container a:hover {
+    background-color: #45a049; /* Couleur de fond au survol */
 }
 
-.button-container .view-pdf,
-.button-container .download-pdf {
-    background-color: #008CBA;
+.button-container .view-pdf {
+    background-color: #008CBA; /* Couleur spécifique pour le bouton "Voir PDF" */
 }
 
-.button-container .view-pdf:hover,
-.button-container .download-pdf:hover {
-    background-color: #007B9E;
+.button-container .view-pdf:hover {
+    background-color: #007B9E; /* Couleur au survol pour "Voir PDF" */
 }
 
 .button-container .view-tutorial {
-    background-color: #f44336;
+    background-color: #f44336; /* Couleur spécifique pour le bouton "Voir le tutoriel" */
 }
 
 .button-container .view-tutorial:hover {
-    background-color: #da190b;
+    background-color: #da190b; /* Couleur au survol pour "Voir le tutoriel" */
 }
 
 .button-container .play-audio {
-    background-color: #ff9800;
+    background-color: #ff9800; /* Couleur spécifique pour le bouton "Jouer l'audio" */
 }
 
 .button-container .play-audio:hover {
-    background-color: #e68a00;
+    background-color: #e68a00; /* Couleur au survol pour "Jouer l'audio" */
+}
+
+/* Nouveau style pour le bouton "Télécharger PDF" */
+.button-container a.download-pdf {
+    background-color: #4CAF50; /* Couleur de fond pour le bouton "Télécharger PDF" */
+}
+
+.button-container a.download-pdf:hover {
+    background-color: #45a049; /* Couleur au survol pour "Télécharger PDF" */
 }
 
 #pdf-viewer {
@@ -110,7 +117,7 @@ body {
 }
 
 #pdf-controls button {
-    background-color: #4CAF50;
+    background-color: #4CAF50; /* Couleur de fond pour les contrôles PDF */
     border: none;
     color: white;
     padding: 10px 15px;
@@ -124,7 +131,7 @@ body {
 }
 
 #close-pdf {
-    background-color: #f44336;
+    background-color: #f44336; /* Couleur spécifique pour le bouton "Fermer le PDF" */
 }
 
 .error-message {
@@ -149,7 +156,7 @@ body {
 
 #search-button {
     padding: 10px 20px;
-    background-color: #4CAF50;
+    background-color: #4CAF50; /* Couleur de fond pour le bouton de recherche */
     color: white;
     border: none;
     border-radius: 4px;
@@ -157,7 +164,7 @@ body {
 }
 
 #search-button:hover {
-    background-color: #45a049;
+    background-color: #45a049; /* Couleur au survol pour le bouton de recherche */
 }
 
 #language-selector {
