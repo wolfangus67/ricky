@@ -29,50 +29,66 @@ header {
 }
 
 /* Barre de recherche */
+/* Styles pour le conteneur de recherche */
 #search-container {
+    position: relative;
     margin-top: 20px;
     text-align: center;
 }
 
+/* Styles pour la barre de recherche */
 #search-input {
     padding: 10px;
     width: 300px;
     border: 1px solid #ccc;
     border-radius: 5px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Ombre légère */
+    font-size: 16px;
 }
 
+/* Styles pour le bouton de recherche */
 #search-button {
     padding: 10px 20px;
-    background-color: #4CAF50; /* Vert doux */
+    background-color: #4CAF50;
     color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    margin-left: 10px; /* Espace entre le champ et le bouton */
+    font-size: 16px;
+    margin-left: 10px;
 }
+
+/* Styles pour la liste de suggestions */
 #suggestion-list {
     position: absolute;
-    background-color: white;
-    border: 1px solid #ddd;
-    border-top: none;
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-    width: 300px;
+    top: 100%; /* Positionne la liste juste en dessous de la barre de recherche */
+    left: 50%;
+    transform: translateX(-50%); /* Centre la liste horizontalement */
+    width: 300px; /* Même largeur que la barre de recherche */
     max-height: 200px;
     overflow-y: auto;
-    display: none;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-top: none;
+    border-radius: 0 0 5px 5px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     z-index: 1000;
+    display: none;
 }
 
 #suggestion-list li {
     padding: 10px;
     cursor: pointer;
+    color: #333; /* Couleur de texte plus foncée pour une meilleure lisibilité */
 }
 
 #suggestion-list li:hover {
     background-color: #f0f0f0;
+}
+
+/* Style pour mettre en évidence le texte correspondant à la recherche */
+#suggestion-list li .highlight {
+    font-weight: bold;
+    color: #4CAF50; /* Couleur verte pour mettre en évidence */
 }
 /* Liste des chansons */
 #ukulele-neck {
