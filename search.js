@@ -7,13 +7,13 @@ export function initializeSearch() {
     const searchButton = document.getElementById('search-button');
     const suggestionList = document.createElement('ul');
     suggestionList.id = 'suggestion-list';
-    searchInput.parentNode.insertBefore(suggestionList, searchInput.nextSibling);
+    document.getElementById('search-container').appendChild(suggestionList);
 
     // Charger la liste des chansons
     loadSongList();
 
     searchButton.addEventListener('click', performSearch);
-    searchInput.addEventListener('keyup', handleSearchInput);
+    searchInput.addEventListener('input', handleSearchInput);
     searchInput.addEventListener('keypress', function(e) {
         if (e.key === 'Enter') {
             performSearch();
@@ -52,7 +52,8 @@ function handleSearchInput(e) {
 
         suggestions.forEach(song => {
             const li = document.createElement('li');
-            li.textContent = song;
+            const highlightedText = song.replace(new RegExp(searchTerm, 'gi'), match => `<span class="highlight">${match}</span>`);
+            li.innerHTML = highlightedText;
             li.addEventListener('click', () => {
                 e.target.value = song;
                 performSearch();
@@ -79,4 +80,12 @@ function performSearch() {
             song.style.display = 'none';
         }
     });
+}
+
+export function updateSearchTranslation(translations, lang) {
+    const searchInput = document.getElementById('search-input');
+    const searchButton = document.getElementById('search-button');
+
+    searchInput.placeholder = translations[lang].searchPlaceholder;
+    searchButton.textContent = translations[lang].searchButton;
 }
