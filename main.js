@@ -1,13 +1,12 @@
-// main.js
-
 import { setLanguage } from './translations.js';
 import { initializeSearch } from './search.js';
 import { openPdfViewer, initializePdfControls } from './pdfViewer.js';
 import { openYoutubeViewer } from './tutorial.js';
-import { initializeAudioPlayer, toggleAudio } from './audio.js';
+import { initializeAudioPlayer, toggleAudio, setCurrentLanguage } from './audio.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     setLanguage('fr'); // Langue par défaut
+    setCurrentLanguage('fr'); // Définir la langue par défaut pour l'audio
     initializeSearch();
     initializePdfControls();
     initializeAudioPlayer();
@@ -15,7 +14,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // Gestionnaire pour le sélecteur de langue
     document.getElementById('language-selector').addEventListener('click', (e) => {
         if (e.target.tagName === 'IMG') {
-            setLanguage(e.target.getAttribute('data-lang'));
+            const lang = e.target.getAttribute('data-lang');
+            setLanguage(lang);
+            setCurrentLanguage(lang);
         }
     });
 
