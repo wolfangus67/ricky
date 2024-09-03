@@ -37,6 +37,7 @@ async function loadSongList() {
             .map(file => file.name.replace('.pdf', '').replace(/_/g, ' '));
     } catch (error) {
         console.error('Error fetching song list:', error);
+        showErrorMessage("Une erreur s'est produite lors du chargement de la liste des chansons.");
     }
 }
 
@@ -74,12 +75,15 @@ function performSearch() {
 
     songs.forEach(song => {
         const songTitle = song.querySelector('h2').textContent.toLowerCase();
-        if (songTitle.includes(searchTerm)) {
-            song.style.display = 'block';
-        } else {
-            song.style.display = 'none';
-        }
+        song.style.display = songTitle.includes(searchTerm) ? 'block' : 'none';
     });
+}
+
+function showErrorMessage(message) {
+    const errorElement = document.createElement('div');
+    errorElement.className = 'error-message';
+    errorElement.textContent = message;
+    document.body.appendChild(errorElement);
 }
 
 export function updateSearchTranslation(translations, lang) {
