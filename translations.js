@@ -1,5 +1,3 @@
-// translations.js
-
 export const translations = {
     'fr': {
         'title': 'Tablatures Ukulélé',
@@ -76,4 +74,11 @@ export function setLanguage(lang) {
             button.textContent = translations[lang].playAudio;
         }
     });
+}
+
+export function translate(key, lang = 'fr') {
+    if (translations[lang] && translations[lang][key]) {
+        return translations[lang][key];
+    }
+    return key; // Retourne la clé si aucune traduction n'est trouvée
 }
