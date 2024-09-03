@@ -1,5 +1,6 @@
-import * as pdfjsLib from './pdfjs/pdf.mjs';
+// pdfViewer.js
 
+let pdfjsLib;
 let pdfDoc = null;
 let pageNum = 1;
 let pageRendering = false;
@@ -8,43 +9,60 @@ let scale = 1.5;
 let canvas;
 let ctx;
 
-export function initializePdfControls() {
-    document.getElementById('prev-page').addEventListener('click', onPrevPage);
-    document.getElementById('next-page').addEventListener('click', onNextPage);
-    document.getElementById('close-pdf').addEventListener('click', closePdfViewer);
-    canvas = document.getElementById('pdf-render');
-    ctx = canvas.getContext('2d');
+export async function initializePdfViewer() {
+    try {
+        pdfjsLib = await import('./pdfjs/pdf.mjs');
+        pdfjsLib.GlobalWorkerOptions.workerSrc = './pdfjs/pdf.worker.mjs';
+    } catch (error) {
+        console.error('Error initializing PDF.js:', error);
+    }
 }
 
-export function openPdfViewer(pdfUrl) {
-    document.getElementById('pdf-viewer').style.display = 'flex';
-    pdfjsLib.getDocument(pdfUrl).promise.then(function(pdf) {
-        pdfDoc = pdf;
-        document.getElementById('page-num').textContent = pageNum;
+export async function openPdfViewer(pdfUrl) {
+    if (!pdfjsLib) {
+        await initializePdfViewer();
+    }
+
+    const pdfViewer = document.getElementById('pdf-viewer');
+    pdfViewer.style.display = 'flex';
+
+    try {
+        pdfDoc = await pdfjsLib.getDocument(pdfUrl).promise;
+        pageNum = 1;
         renderPage(pageNum);
-    });
+        setupPdfControls();
+    } catch (error) {
+        console.error('Error loading PDF:', error);
+    }
 }
 
-function renderPage(num) {
+async function renderPage(num) {
     pageRendering = true;
-    pdfDoc.getPage(num).then(function(page) {
-        let viewport = page.getViewport({scale: scale});
+    try {
+        const page = await pdfDoc.getPage(num);
+        const viewport = page.getViewport({ scale: scale });
+        canvas = document.getElementById('pdf-render');
+        ctx = canvas.getContext('2d');
         canvas.height = viewport.height;
         canvas.width = viewport.width;
-        let renderContext = {
+
+        const renderContext = {
             canvasContext: ctx,
             viewport: viewport
         };
-        let renderTask = page.render(renderContext);
-        renderTask.promise.then(function() {
-            pageRendering = false;
-            if (pageNumPending !== null) {
-                renderPage(pageNumPending);
-                pageNumPending = null;
-            }
-        });
-    });
-    document.getElementById('page-num').textContent = num;
+
+        await page.render(renderContext).promise;
+        pageRendering = false;
+
+        if (pageNumPending !== null) {
+            renderPage(pageNumPending);
+            pageNumPending = null;
+        }
+    } catch (error) {
+        console.error('Error rendering page:', error);
+        pageRendering = false;
+    }
+    updatePageInfo();
 }
 
 function queueRenderPage(num) {
@@ -53,6 +71,17 @@ function queueRenderPage(num) {
     } else {
         renderPage(num);
     }
+}
+
+function updatePageInfo() {
+    document.getElementById('page-num').textContent = pageNum;
+    document.getElementById('page-count').textContent = pdfDoc.numPages;
+}
+
+function setupPdfControls() {
+    document.getElementById('prev-page').addEventListener('click', onPrevPage);
+    document.getElementById('next-page').addEventListener('click', onNextPage);
+    document.getElementById('close-pdf').addEventListener('click', closePdfViewer);
 }
 
 function onPrevPage() {
@@ -68,5 +97,23 @@ function onNextPage() {
 }
 
 function closePdfViewer() {
-    document.getElementById('pdf-viewer').style.display = 'none';
+    const pdfViewer = document.getElementById('pdf-viewer');
+    pdfViewer.style.display = 'none';
+    pdfDoc = null;
+    pageNum = 1;
+    pageRendering = false;
+    pageNumPending = null;
+}
+
+// Fonction pour changer le zoom
+export function changeZoom(zoomValue) {
+    scale = parseFloat(zoomValue);
+    renderPage(pageNum);
+}
+
+// Fonction pour rechercher dans le PDF
+export async function searchPdf(searchTerm) {
+    // Cette fonction nécessite une implémentation plus complexe
+    // qui dépend de la structure de votre application
+    console.log('Recherche de:', searchTerm);
 }
