@@ -214,3 +214,37 @@ header {
     border: 1px solid #f5c6cb;
     border-radius: 5px;
 }
+/* Ajoutez ceci à la fin de votre fichier CSS existant */
+
+/* Style pour le bouton "Télécharger PDF" */
+.download-pdf {
+    background-color: #6B8E23; /* Même couleur que le bouton "Voir PDF" */
+    padding: 8px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+    color: #f2e6d9; /* Texte clair pour les boutons */
+    text-decoration: none; /* Pour enlever le soulignement du lien */
+    display: inline-block; /* Pour que le padding fonctionne correctement */
+}
+
+.download-pdf:hover {
+    opacity: 0.8;
+}
+
+/* Assurez-vous que le conteneur de boutons peut accueillir un bouton supplémentaire */
+.button-container {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap; /* Pour permettre le retour à la ligne si nécessaire */
+}
+
+/* Ajustement pour les petits écrans */
+@media (max-width: 600px) {
+    .download-pdf {
+        padding: 6px 10px;
+        font-size: 12px;
+    }
+}
