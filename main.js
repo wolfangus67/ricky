@@ -4,16 +4,18 @@ import { openYoutubeViewer } from './tutorial.js';
 import { translations, setLanguage, translate } from './translations.js';
 import { initializeSearch, updateSearchTranslation } from './search.js';
 
+let currentLang = 'fr'; // Définissez la langue par défaut
+
 document.addEventListener('DOMContentLoaded', async () => {
     try {
         await initializePdfViewer();
         initializeAudioPlayer();
         initializeSearch();
-        setLanguage('fr'); // Initialisez la langue par défaut
-        setCurrentLanguage('fr'); // Définissez la langue pour l'audio
+        setLanguage(currentLang);
+        setCurrentLanguage(currentLang);
         await loadSongs();
         setupLanguageSelector();
-        updateTranslations();
+        updateAllTranslations();
     } catch (error) {
         console.error('Erreur lors de l\'initialisation:', error);
         showErrorMessage('Une erreur est survenue lors du chargement de la page. Veuillez réessayer.');
@@ -25,11 +27,11 @@ function setupLanguageSelector() {
     if (languageSelector) {
         languageSelector.addEventListener('click', (e) => {
             if (e.target.tagName === 'IMG') {
-                const selectedLanguage = e.target.getAttribute('data-lang');
-                setLanguage(selectedLanguage);
-                setCurrentLanguage(selectedLanguage);
-                updateTranslations();
-                updateSearchTranslation(translations, selectedLanguage);
+                currentLang = e.target.getAttribute('data-lang');
+                setLanguage(currentLang);
+                setCurrentLanguage(currentLang);
+                updateAllTranslations();
+                updateSearchTranslation(translations, currentLang);
             }
         });
     } else {
@@ -37,35 +39,24 @@ function setupLanguageSelector() {
     }
 }
 
-function updateTranslations() {
+function updateAllTranslations() {
     document.querySelectorAll('[data-translate]').forEach(element => {
         const key = element.getAttribute('data-translate');
-        element.textContent = translate(key);
+        element.textContent = translate(key, currentLang);
     });
+    updateSongButtonsTranslations();
 }
 
-async function loadSongs() {
-    try {
-        const response = await fetch('https://api.github.com/repos/wolfangus67/ricky/contents/songs');
-        const files = await response.json();
-        const ukuleleNeck = document.getElementById('ukulele-neck');
-
-        if (!ukuleleNeck) {
-            throw new Error("L'élément 'ukulele-neck' n'a pas été trouvé.");
-        }
-
-        files.forEach((file) => {
-            if (file.name.endsWith('.pdf')) {
-                const songName = file.name.replace('.pdf', '').replace(/_/g, ' ');
-                const pdfUrl = `https://raw.githubusercontent.com/wolfangus67/ricky/main/songs/${encodeURIComponent(file.name)}`;
-                const songElement = createSongElement(songName, pdfUrl);
-                ukuleleNeck.appendChild(songElement);
-            }
-        });
-    } catch (error) {
-        console.error('Erreur lors du chargement de la liste des chansons:', error);
-        showErrorMessage("Une erreur s'est produite lors du chargement des chansons. Veuillez réessayer plus tard.");
-    }
+function updateSongButtonsTranslations() {
+    document.querySelectorAll('.view-pdf').forEach(button => {
+        button.textContent = translate('viewPdf', currentLang);
+    });
+    document.querySelectorAll('.view-tutorial').forEach(button => {
+        button.textContent = translate('viewTutorial', currentLang);
+    });
+    document.querySelectorAll('.play-audio').forEach(button => {
+        button.textContent = translate('playAudio', currentLang);
+    });
 }
 
 function createSongElement(songName, pdfUrl) {
@@ -75,9 +66,9 @@ function createSongElement(songName, pdfUrl) {
     songElement.innerHTML = `
         <h2>${songName}</h2>
         <div class="button-container">
-            <button class="view-pdf" data-translate="viewPdf">${translate('viewPdf')}</button>
-            <button class="view-tutorial" data-translate="viewTutorial">${translate('viewTutorial')}</button>
-            <button class="play-audio" data-translate="playAudio">${translate('playAudio')}</button>
+            <button class="view-pdf" data-translate="viewPdf">${translate('viewPdf', currentLang)}</button>
+            <button class="view-tutorial" data-translate="viewTutorial">${translate('viewTutorial', currentLang)}</button>
+            <button class="play-audio" data-translate="playAudio">${translate('playAudio', currentLang)}</button>
         </div>
     `;
 
@@ -88,9 +79,4 @@ function createSongElement(songName, pdfUrl) {
     return songElement;
 }
 
-function showErrorMessage(message) {
-    const errorElement = document.createElement('div');
-    errorElement.className = 'error-message';
-    errorElement.textContent = message;
-    document.body.appendChild(errorElement);
-}
+// ... Le reste du code reste inchangé
