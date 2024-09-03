@@ -20,7 +20,14 @@
         </div>
     </header>
     <div id="ukulele-neck">
-        <!-- La liste des chansons sera générée ici -->
+        <!-- Exemple de chanson -->
+        <div class="song">
+            <h3>Artiste - Titre</h3>
+            <button class="play-pause-button" data-video-id="YOUTUBE_VIDEO_ID">Lecture</button>
+            <button class="view-pdf" data-pdf-url="path/to/pdf">Voir la tablature PDF</button>
+            <button class="view-tutorial" data-song-name="Titre">Voir le tuto</button>
+        </div>
+        <!-- Ajoutez d'autres chansons ici -->
     </div>
     <div id="pdf-viewer" style="display: none;">
         <div id="pdf-controls">
@@ -31,6 +38,7 @@
         </div>
         <canvas id="pdf-render"></canvas>
     </div>
+    <div id="player" style="display: none;"></div>
     <script type="module" src="script.js"></script>
     <script src="search.js"></script>
     <script src="audio.js"></script>
