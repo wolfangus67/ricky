@@ -1,3 +1,11 @@
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tablatures Ukulélé</title>
+    <link rel="stylesheet" href="styles.css">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://www.youtube.com https://s.ytimg.com; frame-src https://www.youtube.com; img-src 'self' https://i.ytimg.com;">
+</head>
+
 import { setLanguage } from './translations.js';
 import { initializeSearch, updateSearchTranslation } from './search.js';
 import { openPdfViewer, initializePdfControls } from './pdfViewer.js';
