@@ -1,53 +1,102 @@
+/* Styles généraux */
 body {
     font-family: Arial, sans-serif;
     margin: 0;
-    padding: 0;
-    background-color: #f0e6d2;
+    padding: 20px;
+    background-color: #f0f0f0;
 }
 
 header {
-    background-color: #8B4513;
+    background-color: #333;
     color: white;
+    padding: 20px;
     text-align: center;
-    padding: 1em;
 }
 
-#ukulele-neck {
+/* Styles pour le sélecteur de langue */
+#language-selector {
+    margin-top: 10px;
+}
+
+#language-selector img {
+    width: 30px;
+    height: 20px;
+    margin: 0 5px;
+    cursor: pointer;
+}
+
+/* Styles pour la barre de recherche */
+#search-container {
+    margin-top: 20px;
+    text-align: center;
+}
+
+#search-input {
+    padding: 10px;
     width: 300px;
-    margin: 20px auto;
-    background-color: #D2691E;
-    border-radius: 10px;
-    padding: 20px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+#search-button {
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* Styles pour la liste des chansons */
+#ukulele-neck {
+    margin-top: 20px;
 }
 
 .song {
-    margin: 10px 0;
-    padding: 10px;
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: white;
     border-radius: 5px;
+    padding: 15px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
 }
 
 .song h2 {
-    margin: 0;
-    color: white;
+    margin: 0 0 10px 0;
+    color: #333;
 }
 
-button {
-    background-color: #F4A460;
+.button-container {
+    display: flex;
+    gap: 10px;
+}
+
+.song button {
+    padding: 8px 12px;
     border: none;
-    color: white;
-    padding: 10px;
-    margin: 5px;
-    border-radius: 5px;
+    border-radius: 4px;
     cursor: pointer;
-    transition: background-color 0.3s;
+    font-size: 14px;
 }
 
-button:hover {
-    background-color: #CD853F;
+.view-pdf {
+    background-color: #4CAF50;
+    color: white;
 }
 
+.view-tutorial {
+    background-color: #2196F3;
+    color: white;
+}
+
+.play-audio {
+    background-color: #f44336;
+    color: white;
+}
+
+/* Styles pour le visualiseur PDF */
 #pdf-viewer {
     position: fixed;
     top: 0;
@@ -55,86 +104,43 @@ button:hover {
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.8);
-    display: flex;
+    display: none;
     flex-direction: column;
     align-items: center;
     justify-content: center;
 }
 
 #pdf-controls {
-    margin-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+#pdf-controls button {
+    margin: 0 10px;
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
 }
 
 #pdf-render {
-    max-width: 100%;
-    max-height: 80vh;
-}
-#language-selector {
-    position: absolute;
-    top: 10px;
-    right: 10px;
+    max-width: 90%;
+    max-height: 80%;
 }
 
-#language-selector img {
-    width: 30px;
-    height: 20px;
-    margin-left: 5px;
-    cursor: pointer;
-    border: 1px solid #fff;
-}
+/* Responsive design */
+@media (max-width: 600px) {
+    #search-input {
+        width: 200px;
+    }
 
-#language-selector img:hover {
-    opacity: 0.8;
-}
-#suggestions-list {
-    position: absolute;
-    background-color: #f9f9f9; /* Couleur de fond pour les suggestions */
-    border: 1px solid #ccc; /* Bordure pour délimiter la liste */
-    max-height: 200px;
-    overflow-y: auto;
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-    width: calc(100% - 20px); /* Ajuster la largeur pour les marges */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Ombre pour un effet de profondeur */
-    z-index: 1000;
-    border-radius: 4px; /* Coins arrondis */
-}
+    .song {
+        padding: 10px;
+    }
 
-#suggestions-list li {
-    padding: 10px;
-    cursor: pointer;
-    color: #333; /* Couleur du texte */
-}
-
-#suggestions-list li:hover {
-    background-color: #e0e0e0; /* Couleur de fond au survol */
-}
-
-#search-container {
-    position: relative;
-}
-.song {
-    display: flex; /* Utilise Flexbox pour aligner les éléments */
-    align-items: center; /* Aligne verticalement au centre */
-    margin-bottom: 10px; /* Espace entre les chansons */
-}
-
-.song h2 {
-    margin-right: 15px; /* Espace à droite du titre */
-    flex-grow: 1; /* Permet au titre de prendre de l'espace disponible */
-}
-
-.song button {
-    background-color: #4CAF50; /* Couleur de fond verte */
-    color: white; /* Couleur du texte blanche */
-    border: none; /* Pas de bordure */
-    padding: 10px 15px; /* Espacement */
-    cursor: pointer; /* Curseur en forme de main */
-    margin-right: 10px; /* Espace à droite entre les boutons */
-    border-radius: 5px; /* Coins arrondis */
-}
-
-.song button:hover {
-    background-color: #45a049; /* Couleur de fond au survol */
+    .song button {
+        padding: 6px 10px;
+        font-size: 12px;
+    }
 }
