@@ -3,7 +3,7 @@ import { initializeAudioPlayer, toggleAudio, setCurrentLanguage } from './audio.
 import { openYoutubeViewer } from './tutorial.js';
 import { translations, setLanguage, translate } from './translations.js';
 import { initializeSearch, updateSearchTranslation } from './search.js';
-import { gapiLoaded, gisLoaded, handleAuthClick } from './gdrive.js';
+import { gapiLoaded, gisLoaded, handleAuthClick, tokenClient } from './gdrive.js';
 
 let currentLang = 'fr';
 
