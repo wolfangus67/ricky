@@ -53,13 +53,11 @@ document.addEventListener('DOMContentLoaded', () => {
         iframe.src = url;
     }
 
-    function openYoutubeViewer(songName) {
-        const iframe = document.getElementById('youtube-iframe');
-        const youtubeViewer = document.getElementById('youtube-viewer');
-        const searchQuery = encodeURIComponent(`ricky somborn tutorial ${songName}`);
-        iframe.src = `https://www.youtube.com/embed?listType=search&list=${searchQuery}`;
-        youtubeViewer.style.display = 'block';
-    }
+ function openYoutubeViewer(songName) {
+    const searchQuery = encodeURIComponent(`ricky somborn tutorial ${songName}`);
+    const youtubeSearchUrl = `https://www.youtube.com/results?search_query=${searchQuery}`;
+    window.open(youtubeSearchUrl, '_blank');
+}
 
     const closePdf = document.getElementById('close-pdf');
     if (closePdf) {
