@@ -3,6 +3,7 @@ import { initializeAudioPlayer, toggleAudio, setCurrentLanguage } from './audio.
 import { openYoutubeViewer } from './tutorial.js';
 import { translations, setLanguage, translate } from './translations.js';
 import { initializeSearch, updateSearchTranslation } from './search.js';
+import { gapiLoaded, gisLoaded, handleAuthClick } from './gdrive.js';
 
 let currentLang = 'fr';
 
@@ -16,11 +17,18 @@ document.addEventListener('DOMContentLoaded', async () => {
         await loadSongs();
         setupLanguageSelector();
         updateAllTranslations();
+        setupGoogleDrive();
     } catch (error) {
         console.error('Erreur lors de l\'initialisation:', error);
         showErrorMessage('Une erreur est survenue lors du chargement de la page. Veuillez réessayer.');
     }
 });
+
+function setupGoogleDrive() {
+    gapiLoaded();
+    gisLoaded();
+    document.getElementById('authorize_button').addEventListener('click', handleAuthClick);
+}
 
 async function loadSongs() {
     try {
