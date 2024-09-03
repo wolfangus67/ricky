@@ -1,43 +1,41 @@
-// Importations
+// Votre code JavaScript existant ici...
+
+// Début des modifications pour Google Drive
 import { handleAuthClick } from './gdrive.js';
+
+document.addEventListener('DOMContentLoaded', () => {
+    // Ajouter l'écouteur d'événement pour le bouton d'autorisation
+    document.getElementById('authorize_button').addEventListener('click', handleAuthClick);
+
+    // Votre code existant pour initialiser l'application...
+});
+// Fin des modifications pour Google Drive
+
+
+import { openPdfViewer, initializePdfViewer } from './pdfViewer.js';
+import { initializeAudioPlayer, toggleAudio, setCurrentLanguage } from './audio.js';
+import { openYoutubeViewer } from './tutorial.js';
 import { translations, setLanguage, translate } from './translations.js';
-// Importez d'autres modules nécessaires
+import { initializeSearch, updateSearchTranslation } from './search.js';
 
 let currentLang = 'fr';
 
-// Fonction pour mettre à jour toutes les traductions
-function updateAllTranslations() {
-    document.querySelectorAll('[data-translate]').forEach(element => {
-        const key = element.getAttribute('data-translate');
-        element.textContent = translate(key, currentLang);
-    });
-}
-
-// Fonction pour configurer le sélecteur de langue
-function setupLanguageSelector() {
-    const languageSelector = document.getElementById('language-selector');
-    if (languageSelector) {
-        languageSelector.addEventListener('click', (e) => {
-            if (e.target.tagName === 'IMG') {
-                currentLang = e.target.getAttribute('data-lang');
-                setLanguage(currentLang);
-                updateAllTranslations();
-            }
-        });
-    } else {
-        console.error('Élément language-selector non trouvé');
+document.addEventListener('DOMContentLoaded', async () => {
+    try {
+        await initializePdfViewer();
+        initializeAudioPlayer();
+        initializeSearch();
+        setLanguage(currentLang);
+        setCurrentLanguage(currentLang);
+        await loadSongs();
+        setupLanguageSelector();
+        updateAllTranslations();
+    } catch (error) {
+        console.error('Erreur lors de l\'initialisation:', error);
+        showErrorMessage('Une erreur est survenue lors du chargement de la page. Veuillez réessayer.');
     }
-}
+});
 
-// Fonction pour afficher un message d'erreur
-function showErrorMessage(message) {
-    const errorElement = document.createElement('div');
-    errorElement.className = 'error-message';
-    errorElement.textContent = message;
-    document.body.appendChild(errorElement);
-}
-
-// Fonction pour charger les chansons
 async function loadSongs() {
     try {
         const response = await fetch('https://api.github.com/repos/wolfangus67/ricky/contents/songs');
@@ -62,7 +60,6 @@ async function loadSongs() {
     }
 }
 
-// Fonction pour créer un élément de chanson
 function createSongElement(songName, pdfUrl) {
     const songElement = document.createElement('div');
     songElement.className = 'song';
@@ -76,29 +73,40 @@ function createSongElement(songName, pdfUrl) {
         </div>
     `;
 
-    // Ajoutez ici les écouteurs d'événements pour les boutons
+    songElement.querySelector('.view-pdf').addEventListener('click', () => openPdfViewer(pdfUrl));
+    songElement.querySelector('.view-tutorial').addEventListener('click', () => openYoutubeViewer(songName));
+    songElement.querySelector('.play-audio').addEventListener('click', (e) => toggleAudio(songName, e.target));
 
     return songElement;
 }
 
-// Écouteur d'événement pour le chargement du DOM
-document.addEventListener('DOMContentLoaded', async () => {
-    try {
-        document.getElementById('authorize_button').addEventListener('click', handleAuthClick);
-        
-        // Initialisations
-        setLanguage(currentLang);
-        await loadSongs();
-        setupLanguageSelector();
-        updateAllTranslations();
-        
-        // Autres initialisations si nécessaire
-        
-    } catch (error) {
-        console.error('Erreur lors de l\'initialisation:', error);
-        showErrorMessage('Une erreur est survenue lors du chargement de la page. Veuillez réessayer.');
+function setupLanguageSelector() {
+    const languageSelector = document.getElementById('language-selector');
+    if (languageSelector) {
+        languageSelector.addEventListener('click', (e) => {
+            if (e.target.tagName === 'IMG') {
+                currentLang = e.target.getAttribute('data-lang');
+                setLanguage(currentLang);
+                setCurrentLanguage(currentLang);
+                updateAllTranslations();
+                updateSearchTranslation(translations, currentLang);
+            }
+        });
+    } else {
+        console.error('Élément language-selector non trouvé');
     }
-});
+}
 
-// Exportez les fonctions si nécessaire
-export { updateAllTranslations, setupLanguageSelector };
+function updateAllTranslations() {
+    document.querySelectorAll('[data-translate]').forEach(element => {
+        const key = element.getAttribute('data-translate');
+        element.textContent = translate(key, currentLang);
+    });
+}
+
+function showErrorMessage(message) {
+    const errorElement = document.createElement('div');
+    errorElement.className = 'error-message';
+    errorElement.textContent = message;
+    document.body.appendChild(errorElement);
+}
