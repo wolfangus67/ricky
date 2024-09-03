@@ -1,64 +1,74 @@
-import * as pdfjsLib from './pdfjs/pdf.mjs';
+import * as pdfjsLib from 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.9.359/pdf.min.js';
 
-pdfjsLib.GlobalWorkerOptions.workerSrc = './pdfjs/pdf.worker.mjs';
-
-let currentPdf = null;
-let currentPage = 1;
-let pageCount = 0;
-
-export async function openPdfViewer(url) {
-    try {
-        currentPdf = await pdfjsLib.getDocument(url).promise;
-        pageCount = currentPdf.numPages;
-        currentPage = 1;
-        renderPage(currentPage);
-        document.getElementById('pdf-viewer').style.display = 'flex';
-    } catch (error) {
-        console.error('Error loading PDF:', error);
-    }
-}
-
-async function renderPage(num) {
-    const page = await currentPdf.getPage(num);
-    const scale = 1.5;
-    const viewport = page.getViewport({ scale });
-    const canvas = document.getElementById('pdf-render');
-    const ctx = canvas.getContext('2d');
-    canvas.height = viewport.height;
-    canvas.width = viewport.width;
-
-    const renderContext = {
-        canvasContext: ctx,
-        viewport: viewport
-    };
-    await page.render(renderContext);
-
-    updatePageNumber();
-}
-
-function updatePageNumber() {
-    const pageNumElement = document.getElementById('page-num');
-    if (pageNumElement) {
-        pageNumElement.textContent = `Page ${currentPage} of ${pageCount}`;
-    }
-}
+let pdfDoc = null;
+let pageNum = 1;
+let pageRendering = false;
+let pageNumPending = null;
+let scale = 1.5;
+let canvas = document.getElementById('pdf-render');
+let ctx = canvas.getContext('2d');
 
 export function initializePdfControls() {
-    document.getElementById('prev-page').addEventListener('click', () => {
-        if (currentPage > 1) {
-            currentPage--;
-            renderPage(currentPage);
-        }
-    });
+    document.getElementById('prev-page').addEventListener('click', onPrevPage);
+    document.getElementById('next-page').addEventListener('click', onNextPage);
+    document.getElementById('close-pdf').addEventListener('click', closePdfViewer);
+}
 
-    document.getElementById('next-page').addEventListener('click', () => {
-        if (currentPage < pageCount) {
-            currentPage++;
-            renderPage(currentPage);
-        }
+export function openPdfViewer(pdfUrl) {
+    document.getElementById('pdf-viewer').style.display = 'flex';
+    pdfjsLib.getDocument(pdfUrl).promise.then(function(pdf) {
+        pdfDoc = pdf;
+        document.getElementById('page-num').textContent = pageNum;
+        renderPage(pageNum);
     });
+}
 
-    document.getElementById('close-pdf').addEventListener('click', () => {
-        document.getElementById('pdf-viewer').style.display = 'none';
+function renderPage(num) {
+    pageRendering = true;
+    pdfDoc.getPage(num).then(function(page) {
+        let viewport = page.getViewport({scale: scale});
+        canvas.height = viewport.height;
+        canvas.width = viewport.width;
+        let renderContext = {
+            canvasContext: ctx,
+            viewport: viewport
+        };
+        let renderTask = page.render(renderContext);
+        renderTask.promise.then(function() {
+            pageRendering = false;
+            if (pageNumPending !== null) {
+                renderPage(pageNumPending);
+                pageNumPending = null;
+            }
+        });
     });
+    document.getElementById('page-num').textContent = num;
+}
+
+function queueRenderPage(num) {
+    if (pageRendering) {
+        pageNumPending = num;
+    } else {
+        renderPage(num);
+    }
+}
+
+function onPrevPage() {
+    if (pageNum <= 1) {
+        return;
+    }
+    pageNum--;
+    queueRenderPage(pageNum);
+}
+
+function onNextPage() {
+    if (pageNum >= pdfDoc.numPages) {
+        return;
+    }
+    pageNum++;
+    queueRenderPage(pageNum);
+}
+
+function closePdfViewer() {
+    document.getElementById('pdf-viewer').style.display = 'none';
 }
