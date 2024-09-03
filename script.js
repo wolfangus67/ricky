@@ -1,5 +1,5 @@
 async function getSongList() {
-    const response = await fetch('https://api.github.com/repos/wolfangus67/ricky/contents/song');
+    const response = await fetch('https://api.github.com/repos/wolfangus67/ricky/contents/songs');
     const files = await response.json();
     const songList = document.getElementById('song-list');
 
