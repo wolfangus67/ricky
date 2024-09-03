@@ -1,3 +1,5 @@
+// translations.js
+
 export const translations = {
     'fr': {
         'title': 'Tablatures Ukulélé',
@@ -41,12 +43,25 @@ export const translations = {
 };
 
 export function setLanguage(lang) {
-    document.getElementById('main-title').textContent = translations[lang].title;
-    document.getElementById('search-input').setAttribute('placeholder', translations[lang].searchPlaceholder);
-    document.getElementById('search-button').textContent = translations[lang].searchButton;
-    document.getElementById('prev-page').textContent = translations[lang].prevPage;
-    document.getElementById('next-page').textContent = translations[lang].nextPage;
-    document.getElementById('close-pdf').textContent = translations[lang].close;
+    const elementsToTranslate = {
+        'main-title': 'title',
+        'search-input': 'searchPlaceholder',
+        'search-button': 'searchButton',
+        'prev-page': 'prevPage',
+        'next-page': 'nextPage',
+        'close-pdf': 'close'
+    };
+
+    Object.entries(elementsToTranslate).forEach(([elementId, translationKey]) => {
+        const element = document.getElementById(elementId);
+        if (element) {
+            if (elementId === 'search-input') {
+                element.setAttribute('placeholder', translations[lang][translationKey]);
+            } else {
+                element.textContent = translations[lang][translationKey];
+            }
+        }
+    });
 
     document.querySelectorAll('.view-pdf').forEach(button => {
         button.textContent = translations[lang].viewPdf;
