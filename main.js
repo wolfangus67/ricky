@@ -39,6 +39,12 @@ async function loadSongs() {
     }
 }
 
+// main.js
+
+import { toggleAudio } from './audio.js';
+
+// ... autres imports ...
+
 function createSongElement(songName, pdfUrl) {
     const songElement = document.createElement('div');
     songElement.className = 'song';
@@ -53,7 +59,9 @@ function createSongElement(songName, pdfUrl) {
 
     songElement.querySelector('.view-pdf').addEventListener('click', () => openPdfViewer(pdfUrl));
     songElement.querySelector('.view-tutorial').addEventListener('click', () => openYoutubeViewer(songName));
-    songElement.querySelector('.play-audio').addEventListener('click', () => playAudio(songName));
+    songElement.querySelector('.play-audio').addEventListener('click', (e) => toggleAudio(songName, e.target));
 
     return songElement;
 }
+
+// ... reste du code ...
