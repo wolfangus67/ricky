@@ -5,10 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tablatures Ukulélé</title>
     <link rel="stylesheet" href="styles.css">
+    <!-- Début des modifications pour Google Drive -->
+    <script src="https://apis.google.com/js/api.js" defer></script>
+    <script src="https://accounts.google.com/gsi/client" defer></script>
+    <script type="module" src="gdrive.js"></script>
+    <!-- Fin des modifications pour Google Drive -->
 </head>
 <body>
     <header>
         <h1 id="main-title">Tablatures Ukulélé</h1>
+         <!-- Début des modifications pour Google Drive -->
+        <button id="authorize_button" style="visibility: hidden;">Autoriser l'accès à Google Drive</button>
+        <!-- Fin des modifications pour Google Drive -->
         <div id="language-selector">
             <img src="fr-flag.png" alt="Français" data-lang="fr">
             <img src="en-flag.png" alt="English" data-lang="en">
