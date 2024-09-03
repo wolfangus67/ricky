@@ -28,12 +28,21 @@ export async function openPdfViewer(pdfUrl) {
     pdfViewer.style.display = 'flex';
 
     try {
-        pdfDoc = await pdfjsLib.getDocument(pdfUrl).promise;
+        const loadingTask = pdfjsLib.getDocument({
+            url: pdfUrl,
+            withCredentials: true,
+            cMapUrl: 'https://cdn.jsdelivr.net/npm/pdfjs-dist@2.9.359/cmaps/',
+            cMapPacked: true,
+        });
+        
+        pdfDoc = await loadingTask.promise;
         pageNum = 1;
         renderPage(pageNum);
         setupPdfControls();
     } catch (error) {
         console.error('Erreur lors du chargement du PDF:', error);
+        console.error('Détails de l\'erreur:', error.message);
+        console.error('URL du PDF:', pdfUrl);
         showErrorMessage('Erreur lors du chargement du PDF. Veuillez vérifier votre connexion et réessayer.');
     }
 }
@@ -108,6 +117,7 @@ function closePdfViewer() {
 }
 
 function showErrorMessage(message) {
+    console.error('Erreur PDF:', message);
     const errorElement = document.createElement('div');
     errorElement.className = 'error-message';
     errorElement.textContent = message;
