@@ -1,6 +1,8 @@
+// audio.js
+
 import { translations } from './translations.js';
 
-const API_KEY = 'AIzaSyDiFuUIrm1WXjp9slhwMl4G4R23kssEwr0';
+const API_KEY = 'AIzaSyDiFuUIrm1WXjp9slhwMl4G4R23kssEwr0'; // Remplacez par votre clé API sécurisée
 
 let player;
 let currentVideoId = null;
@@ -49,29 +51,33 @@ function onPlayerStateChange(event) {
 }
 
 export async function toggleAudio(songName, button) {
-    if (currentPlayingButton && currentPlayingButton !== button) {
-        currentPlayingButton.textContent = translations[currentLang].playAudio;
-    }
-
-    if (isPlaying && currentPlayingButton === button) {
-        player.pauseVideo();
-        isPlaying = false;
-    } else {
-        const videoId = await getYouTubeVideoId(songName);
-        if (videoId) {
-            if (currentVideoId !== videoId) {
-                player.loadVideoById(videoId);
-                currentVideoId = videoId;
-            }
-            player.playVideo();
-            isPlaying = true;
-        } else {
-            console.error('No video found for:', songName);
-            return;
+    try {
+        if (currentPlayingButton && currentPlayingButton !== button) {
+            currentPlayingButton.textContent = translations[currentLang].playAudio;
         }
+
+        if (isPlaying && currentPlayingButton === button) {
+            player.pauseVideo();
+            isPlaying = false;
+        } else {
+            const videoId = await getYouTubeVideoId(songName);
+            if (videoId) {
+                if (currentVideoId !== videoId) {
+                    player.loadVideoById(videoId);
+                    currentVideoId = videoId;
+                }
+                player.playVideo();
+                isPlaying = true;
+            } else {
+                console.error('No video found for:', songName);
+                return;
+            }
+        }
+        currentPlayingButton = button;
+        updateButtonState();
+    } catch (error) {
+        console.error('Erreur lors de la lecture de l\'audio:', error);
     }
-    currentPlayingButton = button;
-    updateButtonState();
 }
 
 function updateButtonState() {
@@ -81,9 +87,13 @@ function updateButtonState() {
 }
 
 async function getYouTubeVideoId(query) {
-    const response = await fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&q=${encodeURIComponent(query)}&key=${API_KEY}&type=video&maxResults=1`);
-    const data = await response.json();
-    return data.items[0]?.id.videoId;
+    try {
+        const response = await fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&q=${encodeURIComponent(query)}&key=${API_KEY}&type=video&maxResults=1`);
+        const data = await response.json();
+        return data.items[0]?.id.videoId;
+    } catch (error) {
+        console.error('Erreur lors de la récupération de l\'ID vidéo YouTube:', error);
+    }
 }
 
 export function setCurrentLanguage(lang) {
