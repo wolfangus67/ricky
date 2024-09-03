@@ -3,10 +3,12 @@
 import { openPdfViewer, initializePdfViewer } from './pdfViewer.js';
 import { initializeAudioPlayer, toggleAudio } from './audio.js';
 import { openYoutubeViewer } from './tutorial.js';
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' https://api.github.com https://raw.githubusercontent.com; script-src 'self' 'unsafe-inline' https://www.youtube.com https://s.ytimg.com; frame-src https://www.youtube.com; img-src 'self' https://i.ytimg.com data:;">
+import { setLanguage, initializeTranslations } from './translations.js'; // Importation du script de traduction
+
 document.addEventListener('DOMContentLoaded', async () => {
     await initializePdfViewer();
     initializeAudioPlayer();
+    await initializeTranslations(); // Initialisation des traductions
     loadSongs();
 });
 
@@ -19,7 +21,8 @@ async function loadSongs() {
         files.forEach((file) => {
             if (file.name.endsWith('.pdf')) {
                 const songName = file.name.replace('.pdf', '').replace(/_/g, ' ');
-                const songElement = createSongElement(songName, file.download_url);
+                const pdfUrl = `https://raw.githubusercontent.com/wolfangus67/ricky/main/songs/${encodeURIComponent(file.name)}`;
+                const songElement = createSongElement(songName, pdfUrl);
                 ukuleleNeck.appendChild(songElement);
             }
         });
@@ -34,15 +37,22 @@ function createSongElement(songName, pdfUrl) {
     songElement.innerHTML = `
         <h2>${songName}</h2>
         <div class="button-container">
-            <button class="view-pdf">Voir la tablature PDF</button>
-            <button class="view-tutorial">Voir le tuto</button>
-            <button class="play-audio">Lecture</button>
+            <button class="view-pdf">${translate('view_pdf')}</button>
+            <button class="view-tutorial">${translate('view_tutorial')}</button>
+            <button class="play-audio">${translate('play_audio')}</button>
         </div>
     `;
 
-    songElement.querySelector('.view-pdf').addEventListener('click', () => openPdfViewer(pdfUrl));
+    songElement.querySelector('.view-pdf').addEventListener('click', () => {
+        openPdfViewer(pdfUrl);
+    });
     songElement.querySelector('.view-tutorial').addEventListener('click', () => openYoutubeViewer(songName));
     songElement.querySelector('.play-audio').addEventListener('click', (e) => toggleAudio(songName, e.target));
 
     return songElement;
+}
+
+// Fonction pour traduire le texte
+function translate(key) {
+    return translations[currentLanguage][key] || key; // Utilise la clé pour obtenir la traduction
 }
