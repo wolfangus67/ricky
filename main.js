@@ -5,8 +5,8 @@ import { initializeAudioPlayer, toggleAudio, setCurrentLanguage } from './audio.
 import { openYoutubeViewer } from './tutorial.js';
 import { translations, setLanguage, translate } from './translations.js';
 import { initializeSearch, updateSearchTranslation } from './search.js';
-// NOUVEAU: Import des fonctions de gdrive.js
-import { gapiLoaded, gisLoaded, handleAuthClick } from './gdrive.js';
+// Mise à jour de l'import des fonctions de gdrive.js
+import { gapiLoaded, gisLoaded } from './gdrive.js';
 
 let currentLang = 'fr';
 
@@ -17,30 +17,25 @@ document.addEventListener('DOMContentLoaded', async () => {
         initializeSearch();
         setLanguage(currentLang);
         setCurrentLanguage(currentLang);
-        await loadSongs();
         setupLanguageSelector();
         updateAllTranslations();
-        // NOUVEAU: Initialisation de Google Drive
-        setupGoogleDrive();
+        // Initialisation de Google Drive
+        initializeGoogleDrive();
+        // Chargement des chansons de GitHub
+        await loadSongsFromGitHub();
     } catch (error) {
         console.error('Erreur lors de l\'initialisation:', error);
         showErrorMessage('Une erreur est survenue lors du chargement de la page. Veuillez réessayer.');
     }
 });
 
-// NOUVEAU: Fonction pour configurer Google Drive
-function setupGoogleDrive() {
+// Fonction pour initialiser Google Drive
+function initializeGoogleDrive() {
     gapiLoaded();
     gisLoaded();
-    const authorizeButton = document.getElementById('authorize_button');
-    if (authorizeButton) {
-        authorizeButton.addEventListener('click', handleAuthClick);
-    } else {
-        console.error("Le bouton d'autorisation n'a pas été trouvé");
-    }
 }
 
-async function loadSongs() {
+async function loadSongsFromGitHub() {
     try {
         const response = await fetch('https://api.github.com/repos/wolfangus67/ricky/contents/songs');
         const files = await response.json();
@@ -59,8 +54,8 @@ async function loadSongs() {
             }
         });
     } catch (error) {
-        console.error('Erreur lors du chargement de la liste des chansons:', error);
-        showErrorMessage("Une erreur s'est produite lors du chargement des chansons. Veuillez réessayer plus tard.");
+        console.error('Erreur lors du chargement de la liste des chansons depuis GitHub:', error);
+        showErrorMessage("Une erreur s'est produite lors du chargement des chansons depuis GitHub. Veuillez réessayer plus tard.");
     }
 }
 
@@ -114,5 +109,3 @@ function showErrorMessage(message) {
     errorElement.textContent = message;
     document.body.appendChild(errorElement);
 }
-
-// Pour revenir en arrière, supprimez ou commentez les lignes marquées NOUVEAU
