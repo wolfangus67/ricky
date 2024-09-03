@@ -34,19 +34,22 @@ header {
     margin-top: 10px;
 }
 
+
+
 /* Sélecteur de langue */
 #language-selector {
     position: absolute;
     top: 10px;
     right: 10px;
     display: flex;
-    align-items: center;
+    flex-direction: column; /* Aligne les drapeaux en colonne */
+    align-items: flex-end; /* Aligne les drapeaux à droite */
 }
 
 #language-selector img {
-    width: 20px; /* Taille réduite */
+    width: 20px; /* Taille des drapeaux */
     height: 13px; /* Ajustée proportionnellement */
-    margin: 0 3px; /* Espacement réduit entre les drapeaux */
+    margin: 3px 0; /* Espacement vertical entre les drapeaux */
     cursor: pointer;
     transition: transform 0.2s ease; /* Animation au survol */
 }
@@ -60,6 +63,9 @@ header {
     position: relative; /* Pour permettre le positionnement absolu du sélecteur de langue */
     /* ... autres styles existants ... */
 }
+
+
+
 
 /* Barre de recherche */
 #search-container {
