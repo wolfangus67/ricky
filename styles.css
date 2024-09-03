@@ -3,12 +3,12 @@ body {
     font-family: 'Arial', sans-serif;
     margin: 0;
     padding: 20px;
-    background-color: #f9f9f9; /* Couleur de fond claire */
+    background-color: #f0e7d8; /* Couleur de fond claire inspirée du bois */
 }
 
 /* En-tête */
 header {
-    background-color: #4A2C2A; /* Couleur sombre inspirée du bois */
+    background-color: #8B5A2B; /* Couleur sombre inspirée du bois */
     color: white;
     padding: 20px;
     text-align: center;
@@ -37,7 +37,7 @@ header {
 #search-input {
     padding: 10px;
     width: 300px;
-    border: 1px solid #ddd;
+    border: 1px solid #ccc;
     border-radius: 5px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Ombre légère */
 }
@@ -59,7 +59,7 @@ header {
 
 .song {
     background-color: #fff; /* Fond blanc pour les chansons */
-    border: 1px solid #ccc; /* Bordure légère */
+    border: 1px solid #8B5A2B; /* Bordure couleur bois */
     border-radius: 5px;
     padding: 15px;
     margin-bottom: 20px;
@@ -71,7 +71,7 @@ header {
 
 .song h2 {
     margin: 0 0 10px 0;
-    color: #4A2C2A; /* Couleur sombre pour le titre */
+    color: #8B5A2B; /* Couleur sombre pour le titre */
     font-family: 'Georgia', serif; /* Police élégante pour le titre */
 }
 
