@@ -31,7 +31,7 @@ async function loadSongs() {
             .filter(file => file.name.endsWith('.pdf'))
             .map(file => {
                 const [artist, title] = file.name.replace('.pdf', '').split(' - ');
-                return { artist, title, fileId: file.name };
+                return { artist, title, fileName: file.name };
             });
 
         createAlphabetIndex();
@@ -76,12 +76,12 @@ function showSongsByArtist(artist) {
     const artistSongs = pdfIndex.filter(song => song.artist === artist);
 
     artistSongs.forEach(song => {
-        const songElement = createSongElement(song.title, `https://github.com/wolfangus67/ricky/raw/main/songs/${song.fileId}`);
+        const songElement = createSongElement(song.title, song.fileName);
         songsList.appendChild(songElement);
     });
 }
 
-function createSongElement(title, pdfUrl) {
+function createSongElement(title, fileName) {
     const songElement = document.createElement('div');
     songElement.className = 'song';
 
@@ -90,6 +90,7 @@ function createSongElement(title, pdfUrl) {
     songLink.textContent = title;
     songLink.addEventListener('click', (e) => {
         e.preventDefault();
+        const pdfUrl = `https://wolfangus67.github.io/ricky/songs/${encodeURIComponent(fileName)}`;
         openPdfViewer(pdfUrl);
     });
 
@@ -127,3 +128,44 @@ function showErrorMessage(message) {
     errorElement.textContent = message;
     document.body.appendChild(errorElement);
 }
+
+// Fonction pour gérer la recherche
+function handleSearch(query) {
+    const normalizedQuery = query.toLowerCase();
+    const filteredSongs = pdfIndex.filter(song => 
+        song.artist.toLowerCase().includes(normalizedQuery) || 
+        song.title.toLowerCase().includes(normalizedQuery)
+    );
+
+    displaySearchResults(filteredSongs);
+}
+
+// Fonction pour afficher les résultats de recherche
+function displaySearchResults(results) {
+    const songsList = document.getElementById('songs-list');
+    songsList.innerHTML = '';
+
+    if (results.length === 0) {
+        songsList.innerHTML = '<p>Aucun résultat trouvé.</p>';
+        return;
+    }
+
+    results.forEach(song => {
+        const songElement = createSongElement(song.title, song.fileName);
+        songsList.appendChild(songElement);
+    });
+}
+
+// Ajoutez un écouteur d'événements pour le bouton de recherche
+document.getElementById('search-button').addEventListener('click', () => {
+    const query = document.getElementById('search-input').value;
+    handleSearch(query);
+});
+
+// Ajoutez un écouteur d'événements pour la recherche en temps réel (optionnel)
+document.getElementById('search-input').addEventListener('input', (e) => {
+    const query = e.target.value;
+    if (query.length >= 3) { // Commencez la recherche après 3 caractères
+        handleSearch(query);
+    }
+});
