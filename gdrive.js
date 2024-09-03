@@ -63,8 +63,15 @@ async function loadSongsFromDrive() {
             'fields': 'files(id, name)'
         });
 
+        console.log('Response:', response); // Log pour déboguer
+
         const files = response.result.files;
         const ukuleleNeck = document.getElementById('ukulele-neck');
+
+        if (!files || files.length === 0) {
+            console.log('Aucun fichier PDF trouvé dans le dossier spécifié.');
+            return;
+        }
 
         files.forEach((file) => {
             const songName = file.name.replace('.pdf', '');
@@ -100,4 +107,4 @@ function showErrorMessage(message) {
 }
 
 // Exporter les fonctions pour les utiliser dans d'autres fichiers
-export { gapiLoaded, gisLoaded, handleAuthClick, tokenClient };
+export { gapiLoaded, gisLoaded, handleAuthClick };
