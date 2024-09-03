@@ -34,11 +34,31 @@ header {
     margin-top: 10px;
 }
 
+/* Sélecteur de langue */
+#language-selector {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    display: flex;
+    align-items: center;
+}
+
 #language-selector img {
-    width: 30px;
-    height: 20px;
-    margin: 0 5px;
+    width: 20px; /* Taille réduite */
+    height: 13px; /* Ajustée proportionnellement */
+    margin: 0 3px; /* Espacement réduit entre les drapeaux */
     cursor: pointer;
+    transition: transform 0.2s ease; /* Animation au survol */
+}
+
+#language-selector img:hover {
+    transform: scale(1.1); /* Légère augmentation de taille au survol */
+}
+
+/* Ajustement de l'en-tête pour accommoder le sélecteur de langue */
+header {
+    position: relative; /* Pour permettre le positionnement absolu du sélecteur de langue */
+    /* ... autres styles existants ... */
 }
 
 /* Barre de recherche */
