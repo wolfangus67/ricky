@@ -8,9 +8,11 @@ async function getSongList() {
             const songName = file.name.replace('.pdf', '').replace(/_/g, ' ');
             const songElement = document.createElement('section');
             songElement.className = 'song';
+            // Utilisez l'URL de visualisation
+            const fileUrl = `https://raw.githubusercontent.com/wolfangus67/ricky/main/songs/${file.name}`;
             songElement.innerHTML = `
                 <h2>${songName}</h2>
-                <a href="${file.download_url}" target="_blank">Voir la tablature PDF</a>
+                <a href="${fileUrl}" target="_blank">Voir la tablature PDF</a>
             `;
             songList.appendChild(songElement);
         }
