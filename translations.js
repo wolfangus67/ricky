@@ -4,6 +4,7 @@ export const translations = {
         'viewPdf': 'Voir la tablature PDF',
         'viewTutorial': 'Voir le tuto',
         'playAudio': 'Lecture',
+        'stopAudio': 'Stop',
         'searchPlaceholder': 'Rechercher une chanson ou un artiste',
         'searchButton': 'Rechercher',
         'prevPage': 'Page précédente',
@@ -16,6 +17,7 @@ export const translations = {
         'viewPdf': 'View PDF Tab',
         'viewTutorial': 'View Tutorial',
         'playAudio': 'Play',
+        'stopAudio': 'Stop',
         'searchPlaceholder': 'Search for a song or artist',
         'searchButton': 'Search',
         'prevPage': 'Previous Page',
@@ -28,6 +30,7 @@ export const translations = {
         'viewPdf': 'Ver tablatura PDF',
         'viewTutorial': 'Ver tutorial',
         'playAudio': 'Reproducir',
+        'stopAudio': 'Detener',
         'searchPlaceholder': 'Buscar una canción o artista',
         'searchButton': 'Buscar',
         'prevPage': 'Página anterior',
@@ -39,12 +42,11 @@ export const translations = {
 
 export function setLanguage(lang) {
     document.getElementById('main-title').textContent = translations[lang].title;
+    document.getElementById('search-input').setAttribute('placeholder', translations[lang].searchPlaceholder);
+    document.getElementById('search-button').textContent = translations[lang].searchButton;
     document.getElementById('prev-page').textContent = translations[lang].prevPage;
     document.getElementById('next-page').textContent = translations[lang].nextPage;
     document.getElementById('close-pdf').textContent = translations[lang].close;
-    
-    document.getElementById('search-input').setAttribute('placeholder', translations[lang].searchPlaceholder);
-    document.getElementById('search-button').textContent = translations[lang].searchButton;
 
     document.querySelectorAll('.view-pdf').forEach(button => {
         button.textContent = translations[lang].viewPdf;
@@ -53,6 +55,10 @@ export function setLanguage(lang) {
         button.textContent = translations[lang].viewTutorial;
     });
     document.querySelectorAll('.play-audio').forEach(button => {
-        button.textContent = translations[lang].playAudio;
+        if (button.textContent === translations[lang].stopAudio) {
+            button.textContent = translations[lang].stopAudio;
+        } else {
+            button.textContent = translations[lang].playAudio;
+        }
     });
 }
