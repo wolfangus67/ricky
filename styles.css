@@ -25,8 +25,8 @@ header {
 }
 
 .title-icon {
-    width: 40px; /* Ajustez la taille selon vos besoins */
-    height: 40px;
+    width: 60px; /* Ajustez la taille selon vos besoins */
+    height: 60px;
     margin-right: 30px; /* Espace entre l'icône et le texte */
 }
 /* Sélecteur de langue */
