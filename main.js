@@ -1,12 +1,13 @@
 import { setLanguage } from './translations.js';
-import { initializeSearch } from './search.js';
+import { initializeSearch, updateSearchTranslation } from './search.js';
 import { openPdfViewer, initializePdfControls } from './pdfViewer.js';
 import { openYoutubeViewer } from './tutorial.js';
 import { initializeAudioPlayer, toggleAudio, setCurrentLanguage } from './audio.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-    setLanguage('fr'); // Langue par défaut
-    setCurrentLanguage('fr'); // Définir la langue par défaut pour l'audio
+    const defaultLang = 'fr';
+    setLanguage(defaultLang);
+    setCurrentLanguage(defaultLang);
     initializeSearch();
     initializePdfControls();
     initializeAudioPlayer();
@@ -17,6 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const lang = e.target.getAttribute('data-lang');
             setLanguage(lang);
             setCurrentLanguage(lang);
+            updateSearchTranslation(lang);
         }
     });
 
