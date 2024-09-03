@@ -36,8 +36,18 @@ function gisLoaded() {
 }
 
 function maybeEnableButtons() {
+    console.log('maybeEnableButtons called');
+    console.log('gapiInited:', gapiInited);
+    console.log('gisInited:', gisInited);
     if (gapiInited && gisInited) {
-        document.getElementById('authorize_button').style.visibility = 'visible';
+        const button = document.getElementById('authorize_button');
+        console.log('Button element:', button);
+        if (button) {
+            button.style.display = 'block';
+            console.log('Button should be visible now');
+        } else {
+            console.error('Button element not found');
+        }
     }
 }
 
