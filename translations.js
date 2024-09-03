@@ -32,6 +32,22 @@ export const translations = {
         prevPage: "Previous Page",
         nextPage: "Next Page",
         closePdf: "Close PDF"
+    },
+    es: { // Traductions en espagnol
+        viewPdf: "Ver PDF",
+        downloadPdf: "Descargar PDF",
+        viewTutorial: "Ver el tutorial",
+        playAudio: "Reproducir audio",
+        stopAudio: "Detener audio",
+        searchPlaceholder: "Buscar una canción o artista",
+        searchButton: "Buscar",
+        noResults: "No se encontraron resultados",
+        errorLoading: "Error al cargar las canciones",
+        retry: "Reintentar",
+        loading: "Cargando...",
+        prevPage: "Página anterior",
+        nextPage: "Página siguiente",
+        closePdf: "Cerrar PDF"
     }
 };
 
