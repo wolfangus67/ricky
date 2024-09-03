@@ -37,75 +37,40 @@ header {
     padding: 5px 10px;
 }
 
-#alphabet-index {
+#ukulele-neck {
     display: flex;
-    justify-content: center;
     flex-wrap: wrap;
-    margin-bottom: 20px;
+    justify-content: center;
 }
 
-#alphabet-index button {
-    margin: 5px;
+.song {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin: 10px;
+    padding: 15px;
+    width: 250px;
+    text-align: center;
+}
+
+.song h2 {
+    margin-top: 0;
+    color: #333;
+}
+
+.button-container {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 10px;
+}
+
+.button-container button {
     padding: 5px 10px;
-    font-size: 18px;
     background-color: #4CAF50;
     color: white;
     border: none;
     cursor: pointer;
-}
-
-#artists-list, #songs-list {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-}
-
-#artists-list button, .song a {
-    margin: 5px;
-    padding: 10px;
-    font-size: 16px;
-    background-color: #008CBA;
-    color: white;
-    border: none;
-    cursor: pointer;
-    text-decoration: none;
 }
 
 #pdf-viewer {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.8);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
-
-#pdf-controls {
-    margin-bottom: 10px;
-}
-
-#pdf-controls button {
-    margin: 0 5px;
-    padding: 5px 10px;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    cursor: pointer;
-}
-
-#pdf-render {
-    max-width: 90%;
-    max-height: 80%;
-}
-
-.error-message {
-    background-color: #f44336;
-    color: white;
-    padding: 10px;
-    margin-top: 10px;
-    text-align: center;
-}
