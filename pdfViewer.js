@@ -1,4 +1,4 @@
-// pdfViewer.mjs
+import * as pdfjsLib from './pdfjs/pdf.mjs';
 
 let pdfDoc = null;
 let pageNum = 1;
@@ -16,39 +16,34 @@ export function initializePdfControls() {
     ctx = canvas.getContext('2d');
 }
 
-export async function openPdfViewer(pdfUrl) {
+export function openPdfViewer(pdfUrl) {
     document.getElementById('pdf-viewer').style.display = 'flex';
-    try {
-        const pdfjsLib = await import('https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.9.359/pdf.esm.min.js');
-        pdfDoc = await pdfjsLib.getDocument(pdfUrl).promise;
+    pdfjsLib.getDocument(pdfUrl).promise.then(function(pdf) {
+        pdfDoc = pdf;
         document.getElementById('page-num').textContent = pageNum;
         renderPage(pageNum);
-    } catch (error) {
-        console.error('Error loading PDF:', error);
-    }
+    });
 }
 
-async function renderPage(num) {
+function renderPage(num) {
     pageRendering = true;
-    try {
-        const page = await pdfDoc.getPage(num);
-        const viewport = page.getViewport({scale: scale});
+    pdfDoc.getPage(num).then(function(page) {
+        let viewport = page.getViewport({scale: scale});
         canvas.height = viewport.height;
         canvas.width = viewport.width;
-        const renderContext = {
+        let renderContext = {
             canvasContext: ctx,
             viewport: viewport
         };
-        await page.render(renderContext).promise;
-        pageRendering = false;
-        if (pageNumPending !== null) {
-            renderPage(pageNumPending);
-            pageNumPending = null;
-        }
-    } catch (error) {
-        console.error('Error rendering page:', error);
-        pageRendering = false;
-    }
+        let renderTask = page.render(renderContext);
+        renderTask.promise.then(function() {
+            pageRendering = false;
+            if (pageNumPending !== null) {
+                renderPage(pageNumPending);
+                pageNumPending = null;
+            }
+        });
+    });
     document.getElementById('page-num').textContent = num;
 }
 
