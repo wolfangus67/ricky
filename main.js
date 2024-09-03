@@ -34,48 +34,18 @@ async function loadSongs() {
                 return { artist, title, fileName: file.name };
             });
 
-        createAlphabetIndex();
+        displaySongs();
     } catch (error) {
         console.error('Erreur lors du chargement des chansons:', error);
         showErrorMessage("Une erreur s'est produite lors du chargement des chansons. Veuillez réessayer plus tard.");
     }
 }
 
-function createAlphabetIndex() {
-    const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    const indexContainer = document.getElementById('alphabet-index');
-
-    for (let letter of alphabet) {
-        const letterButton = document.createElement('button');
-        letterButton.textContent = letter;
-        letterButton.addEventListener('click', () => showArtistsByLetter(letter));
-        indexContainer.appendChild(letterButton);
-    }
-}
-
-function showArtistsByLetter(letter) {
-    const artistsList = document.getElementById('artists-list');
-    artistsList.innerHTML = '';
-
-    const filteredArtists = [...new Set(pdfIndex
-        .filter(song => song.artist.toUpperCase().startsWith(letter))
-        .map(song => song.artist))];
-
-    filteredArtists.forEach(artist => {
-        const artistButton = document.createElement('button');
-        artistButton.textContent = artist;
-        artistButton.addEventListener('click', () => showSongsByArtist(artist));
-        artistsList.appendChild(artistButton);
-    });
-}
-
-function showSongsByArtist(artist) {
+function displaySongs() {
     const songsList = document.getElementById('songs-list');
     songsList.innerHTML = '';
 
-    const artistSongs = pdfIndex.filter(song => song.artist === artist);
-
-    artistSongs.forEach(song => {
+    pdfIndex.forEach(song => {
         const songElement = createSongElement(song.title, song.fileName);
         songsList.appendChild(songElement);
     });
@@ -128,44 +98,3 @@ function showErrorMessage(message) {
     errorElement.textContent = message;
     document.body.appendChild(errorElement);
 }
-
-// Fonction pour gérer la recherche
-function handleSearch(query) {
-    const normalizedQuery = query.toLowerCase();
-    const filteredSongs = pdfIndex.filter(song => 
-        song.artist.toLowerCase().includes(normalizedQuery) || 
-        song.title.toLowerCase().includes(normalizedQuery)
-    );
-
-    displaySearchResults(filteredSongs);
-}
-
-// Fonction pour afficher les résultats de recherche
-function displaySearchResults(results) {
-    const songsList = document.getElementById('songs-list');
-    songsList.innerHTML = '';
-
-    if (results.length === 0) {
-        songsList.innerHTML = '<p>Aucun résultat trouvé.</p>';
-        return;
-    }
-
-    results.forEach(song => {
-        const songElement = createSongElement(song.title, song.fileName);
-        songsList.appendChild(songElement);
-    });
-}
-
-// Ajoutez un écouteur d'événements pour le bouton de recherche
-document.getElementById('search-button').addEventListener('click', () => {
-    const query = document.getElementById('search-input').value;
-    handleSearch(query);
-});
-
-// Ajoutez un écouteur d'événements pour la recherche en temps réel (optionnel)
-document.getElementById('search-input').addEventListener('input', (e) => {
-    const query = e.target.value;
-    if (query.length >= 3) { // Commencez la recherche après 3 caractères
-        handleSearch(query);
-    }
-});
