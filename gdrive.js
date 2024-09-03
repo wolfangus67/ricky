@@ -1,11 +1,9 @@
 // gdrive.js
 
-import { openPdfViewer } from './pdfViewer.js';
 import { openYoutubeViewer } from './tutorial.js';
 import { toggleAudio } from './audio.js';
 import { translate } from './translations.js';
 
-// Constantes pour l'API Google Drive
 const CLIENT_ID = '234810356117-bc5je2lea6h1pri38gv9jdlh8b6uc7nu.apps.googleusercontent.com';
 const API_KEY = 'AIzaSyDiFuUIrm1WXjp9slhwMl4G4R23kssEwr0';
 const DISCOVERY_DOCS = ["https://www.googleapis.com/discovery/v1/apis/drive/v3/rest"];
@@ -47,6 +45,25 @@ function maybeLoadFiles() {
     }
 }
 
+function createSongElement(songName, fileId) {
+    const songElement = document.createElement('div');
+    songElement.className = 'song';
+
+    songElement.innerHTML = `
+        <h2>${songName}</h2>
+        <div class="button-container">
+            <a href="https://drive.google.com/uc?export=download&id=${fileId}" target="_blank" class="download-pdf" data-translate="downloadPdf">${translate('downloadPdf', currentLang)}</a>
+            <button class="view-tutorial" data-translate="viewTutorial">${translate('viewTutorial', currentLang)}</button>
+            <button class="play-audio" data-translate="playAudio">${translate('playAudio', currentLang)}</button>
+        </div>
+    `;
+
+    songElement.querySelector('.view-tutorial').addEventListener('click', () => openYoutubeViewer(songName));
+    songElement.querySelector('.play-audio').addEventListener('click', (e) => toggleAudio(songName, e.target));
+
+    return songElement;
+}
+
 async function loadSongsFromDrive() {
     try {
         await tokenClient.requestAccessToken({prompt: ''});
@@ -67,34 +84,13 @@ async function loadSongsFromDrive() {
 
         files.forEach((file) => {
             const songName = file.name.replace('.pdf', '');
-            const pdfUrl = `https://drive.google.com/file/d/${file.id}/view`;
-            const songElement = createSongElement(songName, pdfUrl);
+            const songElement = createSongElement(songName, file.id);
             ukuleleNeck.appendChild(songElement);
         });
     } catch (error) {
         console.error('Erreur lors du chargement de la liste des chansons:', error);
         showErrorMessage("Une erreur s'est produite lors du chargement des chansons. Veuillez réessayer plus tard.");
     }
-}
-
-function createSongElement(songName, pdfUrl) {
-    const songElement = document.createElement('div');
-    songElement.className = 'song';
-
-    songElement.innerHTML = `
-        <h2>${songName}</h2>
-        <div class="button-container">
-            <button class="view-pdf" data-translate="viewPdf">${translate('viewPdf', currentLang)}</button>
-            <button class="view-tutorial" data-translate="viewTutorial">${translate('viewTutorial', currentLang)}</button>
-            <button class="play-audio" data-translate="playAudio">${translate('playAudio', currentLang)}</button>
-        </div>
-    `;
-
-    songElement.querySelector('.view-pdf').addEventListener('click', () => openPdfViewer(pdfUrl));
-    songElement.querySelector('.view-tutorial').addEventListener('click', () => openYoutubeViewer(songName));
-    songElement.querySelector('.play-audio').addEventListener('click', (e) => toggleAudio(songName, e.target));
-
-    return songElement;
 }
 
 function showErrorMessage(message) {
@@ -104,4 +100,4 @@ function showErrorMessage(message) {
     document.body.appendChild(errorElement);
 }
 
-export { gapiLoaded, gisLoaded, createSongElement };
+export { gapiLoaded, gisLoaded };
