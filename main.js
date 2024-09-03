@@ -1,6 +1,6 @@
 // main.js
 
-import { openPdfViewer, initializePdfViewer } from './pdfViewer.js';
+//import { openPdfViewer, initializePdfViewer } from './pdfViewer.js';
 import { initializeAudioPlayer, toggleAudio, setCurrentLanguage } from './audio.js';
 import { openYoutubeViewer } from './tutorial.js';
 import { translations, setLanguage, translate } from './translations.js';
