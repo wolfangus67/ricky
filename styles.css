@@ -15,7 +15,20 @@ header {
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
+/* Style pour le titre principal avec icône */
+#main-title {
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Pour centrer le titre dans l'en-tête */
+    font-size: 28px; /* Ajustez selon vos préférences */
+    margin: 0; /* Pour supprimer les marges par défaut du h1 */
+}
 
+.title-icon {
+    width: 30px; /* Ajustez la taille selon vos besoins */
+    height: 30px;
+    margin-right: 10px; /* Espace entre l'icône et le texte */
+}
 /* Sélecteur de langue */
 #language-selector {
     margin-top: 10px;
