@@ -1,4 +1,8 @@
+import * as pdfjsLib from './pdfjs/pdf.mjs';
+
 document.addEventListener('DOMContentLoaded', () => {
+    pdfjsLib.GlobalWorkerOptions.workerSrc = './pdfjs/pdf.worker.mjs';
+
     async function getSongList() {
         try {
             const response = await fetch('https://api.github.com/repos/wolfangus67/ricky/contents/songs');
@@ -18,7 +22,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     `;
                     ukuleleNeck.appendChild(songElement);
 
-                    // Ajouter une frette après chaque chanson (sauf la dernière)
                     if (index < files.length - 1) {
                         const fret = document.createElement('div');
                         fret.className = 'fret';
@@ -45,19 +48,33 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    function openPdfViewer(url) {
-        const iframe = document.getElementById('pdf-iframe');
-        const loadingIndicator = document.getElementById('loading');
-        const pdfViewer = document.getElementById('pdf-viewer');
-        
-        loadingIndicator.style.display = 'block';
-        pdfViewer.style.display = 'flex';
-        
-        iframe.onload = function() {
-            loadingIndicator.style.display = 'none';
-        };
-        
-        iframe.src = url;
+    async function openPdfViewer(url) {
+        const loadingTask = pdfjsLib.getDocument(url);
+        try {
+            const pdf = await loadingTask.promise;
+            const page = await pdf.getPage(1);
+            const scale = 1.5;
+            const viewport = page.getViewport({ scale });
+
+            const container = document.getElementById('pdf-container');
+            container.innerHTML = ''; // Clear previous content
+            const canvas = document.createElement('canvas');
+            container.appendChild(canvas);
+
+            const context = canvas.getContext('2d');
+            canvas.height = viewport.height;
+            canvas.width = viewport.width;
+
+            const renderContext = {
+                canvasContext: context,
+                viewport: viewport
+            };
+            await page.render(renderContext);
+
+            document.getElementById('pdf-viewer').style.display = 'block';
+        } catch (error) {
+            console.error('Error loading PDF:', error);
+        }
     }
 
     function openYoutubeViewer(songName) {
@@ -69,9 +86,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const closePdf = document.getElementById('close-pdf');
     if (closePdf) {
         closePdf.addEventListener('click', () => {
-            const pdfViewer = document.getElementById('pdf-viewer');
-            pdfViewer.style.display = 'none';
-            document.getElementById('pdf-iframe').src = '';
+            document.getElementById('pdf-viewer').style.display = 'none';
         });
     }
 
