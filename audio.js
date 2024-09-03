@@ -1,18 +1,20 @@
-// audio.js
+const API_KEY = 'AIzaSyDiFuUIrm1WXjp9slhwMl4G4R23kssEwr0';
 
 let player;
 let currentVideoId = null;
-let isPlaying = false;
 
-// Charger l'API YouTube IFrame
-function loadYouTubeAPI() {
-    const scriptTag = document.createElement('script');
-    scriptTag.src = "https://www.youtube.com/iframe_api";
-    document.body.appendChild(scriptTag);
+export function initializeAudioPlayer() {
+    loadYouTubeAPI();
 }
 
-// Initialiser le lecteur YouTube
-function onYouTubeIframeAPIReady() {
+function loadYouTubeAPI() {
+    const tag = document.createElement('script');
+    tag.src = "https://www.youtube.com/iframe_api";
+    const firstScriptTag = document.getElementsByTagName('script')[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+}
+
+window.onYouTubeIframeAPIReady = function() {
     player = new YT.Player('player', {
         height: '0',
         width: '0',
@@ -26,55 +28,25 @@ function onYouTubeIframeAPIReady() {
     });
 }
 
-// Ajouter des boutons "Lecture" et gérer les clics
 function onPlayerReady(event) {
-    document.querySelectorAll('.song').forEach(songElement => {
-        const songName = songElement.querySelector('h2').textContent;
-        const playButton = document.createElement('button');
-        playButton.className = 'play-audio';
-        playButton.textContent = 'Lecture';
-        playButton.setAttribute('data-song-name', songName);
-        songElement.appendChild(playButton);
-
-        playButton.addEventListener('click', async () => {
-            const videoId = await getYouTubeVideoId(songName);
-            if (currentVideoId !== videoId) {
-                player.loadVideoById(videoId);
-                currentVideoId = videoId;
-                isPlaying = true;
-                updateButtonState(playButton, isPlaying);
-            } else {
-                togglePlayPause(playButton);
-            }
-        });
-    });
+    console.log("YouTube player is ready");
 }
 
-// Rechercher l'ID de la vidéo YouTube
+export async function playAudio(songName) {
+    const videoId = await getYouTubeVideoId(songName);
+    if (videoId) {
+        if (currentVideoId !== videoId) {
+            player.loadVideoById(videoId);
+            currentVideoId = videoId;
+        }
+        player.playVideo();
+    } else {
+        console.error('No video found for:', songName);
+    }
+}
+
 async function getYouTubeVideoId(query) {
-    const apiKey = 'AIzaSyDiFuUIrm1WXjp9slhwMl4G4R23kssEwr0';
-    const response = await fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&q=${encodeURIComponent(query)}&key=${apiKey}&type=video&maxResults=1`);
+    const response = await fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&q=${encodeURIComponent(query)}&key=${API_KEY}&type=video&maxResults=1`);
     const data = await response.json();
     return data.items[0]?.id.videoId;
 }
-
-// Gérer la lecture et la pause
-function togglePlayPause(button) {
-    if (isPlaying) {
-        player.pauseVideo();
-    } else {
-        player.playVideo();
-    }
-    isPlaying = !isPlaying;
-    updateButtonState(button, isPlaying);
-}
-
-// Mettre à jour l'état du bouton
-function updateButtonState(button, playing) {
-    button.textContent = playing ? 'Pause' : 'Lecture';
-}
-
-// Charger l'API YouTube et initialiser les lecteurs
-document.addEventListener('DOMContentLoaded', () => {
-    loadYouTubeAPI();
-});
