@@ -3,9 +3,6 @@
 import { openPdfViewer, initializePdfViewer } from './pdfViewer.js';
 import { initializeAudioPlayer, toggleAudio } from './audio.js';
 import { openYoutubeViewer } from './tutorial.js';
-import { setLanguage, translate } from './translations.js'; // Modifié ici
-
-let currentLanguage = 'fr'; // Langue par défaut
 
 document.addEventListener('DOMContentLoaded', async () => {
     await initializePdfViewer();
