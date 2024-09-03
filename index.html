@@ -5,55 +5,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tablatures Ukulélé</title>
     <link rel="stylesheet" href="styles.css">
-    <!-- Le fichier CSS pour le style de la page -->
 </head>
 <body>
     <header>
         <h1 id="main-title">Tablatures Ukulélé alpha 1</h1>
-        <!-- Titre principal de la page -->
-
         <div id="language-selector">
-            <!-- Sélecteur de langue avec des drapeaux pour changer la langue -->
             <img src="fr-flag.png" alt="Français" data-lang="fr">
             <img src="en-flag.png" alt="English" data-lang="en">
             <img src="es-flag.png" alt="Español" data-lang="es">
         </div>
-
         <div id="search-container">
-            <!-- Conteneur de recherche avec un champ de saisie et un bouton -->
             <input type="text" id="search-input" placeholder="Rechercher une chanson ou un artiste">
             <button id="search-button">Rechercher</button>
         </div>
     </header>
-
     <div id="ukulele-neck">
-        <!-- Conteneur principal où les chansons seront listées -->
-        <!-- Ajoutez d'autres chansons ici -->
+        <!-- Les chansons seront chargées ici -->
     </div>
-
     <div id="pdf-viewer" style="display: none;">
-        <!-- Visualiseur PDF, caché par défaut -->
         <div id="pdf-controls">
-            <!-- Contrôles pour naviguer dans le PDF -->
             <button id="prev-page">Page précédente</button>
             <span id="page-num"></span>
             <button id="next-page">Page suivante</button>
             <button id="close-pdf">Fermer</button>
         </div>
         <canvas id="pdf-render"></canvas>
-        <!-- Canvas pour rendre le contenu du PDF -->
     </div>
-
     <div id="player" style="display: none;"></div>
-    <!-- Conteneur pour le lecteur YouTube invisible -->
-
-    <script type="module" src="script.js"></script>
-    <!-- Script principal pour gérer les fonctionnalités de base -->
-
-    <script src="search.js"></script>
-    <!-- Script pour gérer la recherche de chansons -->
-
-    <script src="audio.js"></script>
-    <!-- Script pour gérer la lecture audio via YouTube -->
+    <script type="module" src="main.js"></script>
 </body>
 </html>
