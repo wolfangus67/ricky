@@ -51,7 +51,29 @@ header {
     cursor: pointer;
     margin-left: 10px; /* Espace entre le champ et le bouton */
 }
+#suggestion-list {
+    position: absolute;
+    background-color: white;
+    border: 1px solid #ddd;
+    border-top: none;
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    width: 300px;
+    max-height: 200px;
+    overflow-y: auto;
+    display: none;
+    z-index: 1000;
+}
 
+#suggestion-list li {
+    padding: 10px;
+    cursor: pointer;
+}
+
+#suggestion-list li:hover {
+    background-color: #f0f0f0;
+}
 /* Liste des chansons */
 #ukulele-neck {
     margin-top: 20px;
