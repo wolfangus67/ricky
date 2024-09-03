@@ -163,7 +163,7 @@ document.getElementById('close-pdf').addEventListener('click', () => {
 });
 
 document.getElementById('language-selector').addEventListener('click', (e) => {
-    if (e.target.tagName === 'SPAN') {
+    if (e.target.tagName === 'IMG') {
         setLanguage(e.target.getAttribute('data-lang'));
     }
 });
