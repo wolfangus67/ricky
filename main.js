@@ -1,17 +1,3 @@
-// Votre code JavaScript existant ici...
-
-// Début des modifications pour Google Drive
-import { handleAuthClick } from './gdrive.js';
-
-document.addEventListener('DOMContentLoaded', () => {
-    // Ajouter l'écouteur d'événement pour le bouton d'autorisation
-    document.getElementById('authorize_button').addEventListener('click', handleAuthClick);
-
-    // Votre code existant pour initialiser l'application...
-});
-// Fin des modifications pour Google Drive
-
-
 import { openPdfViewer, initializePdfViewer } from './pdfViewer.js';
 import { initializeAudioPlayer, toggleAudio, setCurrentLanguage } from './audio.js';
 import { openYoutubeViewer } from './tutorial.js';
@@ -73,40 +59,4 @@ function createSongElement(songName, pdfUrl) {
         </div>
     `;
 
-    songElement.querySelector('.view-pdf').addEventListener('click', () => openPdfViewer(pdfUrl));
-    songElement.querySelector('.view-tutorial').addEventListener('click', () => openYoutubeViewer(songName));
-    songElement.querySelector('.play-audio').addEventListener('click', (e) => toggleAudio(songName, e.target));
-
-    return songElement;
-}
-
-function setupLanguageSelector() {
-    const languageSelector = document.getElementById('language-selector');
-    if (languageSelector) {
-        languageSelector.addEventListener('click', (e) => {
-            if (e.target.tagName === 'IMG') {
-                currentLang = e.target.getAttribute('data-lang');
-                setLanguage(currentLang);
-                setCurrentLanguage(currentLang);
-                updateAllTranslations();
-                updateSearchTranslation(translations, currentLang);
-            }
-        });
-    } else {
-        console.error('Élément language-selector non trouvé');
-    }
-}
-
-function updateAllTranslations() {
-    document.querySelectorAll('[data-translate]').forEach(element => {
-        const key = element.getAttribute('data-translate');
-        element.textContent = translate(key, currentLang);
-    });
-}
-
-function showErrorMessage(message) {
-    const errorElement = document.createElement('div');
-    errorElement.className = 'error-message';
-    errorElement.textContent = message;
-    document.body.appendChild(errorElement);
-}
+    songElement.querySelector
