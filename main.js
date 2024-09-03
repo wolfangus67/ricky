@@ -1,7 +1,7 @@
 import { openPdfViewer, initializePdfViewer } from './pdfViewer.js';
 import { initializeAudioPlayer, toggleAudio, setCurrentLanguage } from './audio.js';
 import { openYoutubeViewer } from './tutorial.js';
-import { setLanguage, translate } from './translations.js';
+import { translations, setLanguage, translate } from './translations.js';
 import { initializeSearch, updateSearchTranslation } from './search.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
