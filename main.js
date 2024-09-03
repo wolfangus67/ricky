@@ -1,8 +1,10 @@
+// main.js
+
 import { setLanguage } from './translations.js';
 import { initializeSearch } from './search.js';
 import { openPdfViewer, initializePdfControls } from './pdfViewer.js';
 import { openYoutubeViewer } from './tutorial.js';
-import { initializeAudioPlayer, playAudio } from './audio.js';
+import { initializeAudioPlayer, toggleAudio } from './audio.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     setLanguage('fr'); // Langue par défaut
@@ -39,12 +41,6 @@ async function loadSongs() {
     }
 }
 
-// main.js
-
-import { toggleAudio } from './audio.js';
-
-// ... autres imports ...
-
 function createSongElement(songName, pdfUrl) {
     const songElement = document.createElement('div');
     songElement.className = 'song';
@@ -63,5 +59,3 @@ function createSongElement(songName, pdfUrl) {
 
     return songElement;
 }
-
-// ... reste du code ...
