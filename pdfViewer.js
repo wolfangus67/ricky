@@ -1,17 +1,17 @@
-import * as pdfjsLib from 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.9.359/pdf.min.js';
-
 let pdfDoc = null;
 let pageNum = 1;
 let pageRendering = false;
 let pageNumPending = null;
 let scale = 1.5;
-let canvas = document.getElementById('pdf-render');
-let ctx = canvas.getContext('2d');
+let canvas;
+let ctx;
 
 export function initializePdfControls() {
     document.getElementById('prev-page').addEventListener('click', onPrevPage);
     document.getElementById('next-page').addEventListener('click', onNextPage);
     document.getElementById('close-pdf').addEventListener('click', closePdfViewer);
+    canvas = document.getElementById('pdf-render');
+    ctx = canvas.getContext('2d');
 }
 
 export function openPdfViewer(pdfUrl) {
