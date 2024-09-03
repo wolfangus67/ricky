@@ -1,5 +1,3 @@
-pdfjsLib.GlobalWorkerOptions.workerSrc = 'pdfjs/pdf.worker.js';
-
 async function getSongList() {
     const response = await fetch('https://api.github.com/repos/wolfangus67/ricky/contents/songs');
     const files = await response.json();
@@ -27,29 +25,15 @@ async function getSongList() {
     });
 }
 
-async function openPdfViewer(url) {
-    const loadingTask = pdfjsLib.getDocument(url);
-    const pdf = await loadingTask.promise;
-    const page = await pdf.getPage(1);
-    const scale = 1.5;
-    const viewport = page.getViewport({ scale });
-
-    const canvas = document.getElementById('pdf-render');
-    const context = canvas.getContext('2d');
-    canvas.height = viewport.height;
-    canvas.width = viewport.width;
-
-    const renderContext = {
-        canvasContext: context,
-        viewport: viewport
-    };
-    await page.render(renderContext);
-
+function openPdfViewer(url) {
+    const iframe = document.getElementById('pdf-iframe');
+    iframe.src = `https://docs.google.com/viewer?url=${encodeURIComponent(url)}&embedded=true`;
     document.getElementById('pdf-viewer').style.display = 'block';
 }
 
 document.getElementById('close-pdf').addEventListener('click', () => {
     document.getElementById('pdf-viewer').style.display = 'none';
+    document.getElementById('pdf-iframe').src = '';
 });
 
 getSongList();
