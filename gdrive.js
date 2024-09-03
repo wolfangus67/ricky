@@ -1,5 +1,3 @@
-
-
 // Constantes pour l'API Google Drive
 const CLIENT_ID = '234810356117-bc5je2lea6h1pri38gv9jdlh8b6uc7nu.apps.googleusercontent.com';
 const API_KEY = 'AIzaSyDiFuUIrm1WXjp9slhwMl4G4R23kssEwr0';
@@ -22,58 +20,34 @@ async function initializeGapiClient() {
         discoveryDocs: DISCOVERY_DOCS,
     });
     gapiInited = true;
-    maybeEnableButtons();
+    maybeLoadFiles();
 }
 
 function gisLoaded() {
     tokenClient = google.accounts.oauth2.initTokenClient({
         client_id: CLIENT_ID,
         scope: SCOPES,
-        callback: '', // défini plus tard
+        callback: '', // sera défini plus tard
     });
     gisInited = true;
-    maybeEnableButtons();
+    maybeLoadFiles();
 }
 
-function maybeEnableButtons() {
-    console.log('maybeEnableButtons called');
-    console.log('gapiInited:', gapiInited);
-    console.log('gisInited:', gisInited);
+function maybeLoadFiles() {
     if (gapiInited && gisInited) {
-        const button = document.getElementById('authorize_button');
-        console.log('Button element:', button);
-        if (button) {
-            button.style.display = 'block';
-            console.log('Button should be visible now');
-        } else {
-            console.error('Button element not found');
-        }
-    }
-}
-
-function handleAuthClick() {
-    tokenClient.callback = async (resp) => {
-        if (resp.error !== undefined) {
-            throw (resp);
-        }
-        await loadSongsFromDrive();
-    };
-
-    if (gapi.client.getToken() === null) {
-        tokenClient.requestAccessToken({prompt: 'consent'});
-    } else {
-        tokenClient.requestAccessToken({prompt: ''});
+        loadSongsFromDrive();
     }
 }
 
 async function loadSongsFromDrive() {
     try {
+        await tokenClient.requestAccessToken({prompt: ''});
         const response = await gapi.client.drive.files.list({
             'q': `'${FOLDER_ID}' in parents and mimeType='application/pdf'`,
             'fields': 'files(id, name)'
         });
 
-        console.log('Response:', response); // Log pour déboguer
+        console.log('Response:', response);
 
         const files = response.result.files;
         const ukuleleNeck = document.getElementById('ukulele-neck');
@@ -117,4 +91,4 @@ function showErrorMessage(message) {
 }
 
 // Exporter les fonctions pour les utiliser dans d'autres fichiers
-export { gapiLoaded, gisLoaded, handleAuthClick };
+export { gapiLoaded, gisLoaded };
