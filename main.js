@@ -1,25 +1,12 @@
-import { setLanguage } from './translations.js';
-import { initializeSearch } from './search.js';
-import { openPdfViewer, initializePdfControls } from './pdfViewer.js';
+// main.js
+
+import { openPdfViewer, initializePdfViewer } from './pdfViewer.js';
+import { initializeAudioPlayer, toggleAudio } from './audio.js';
 import { openYoutubeViewer } from './tutorial.js';
-import { initializeAudioPlayer, toggleAudio, setCurrentLanguage } from './audio.js';
 
-document.addEventListener('DOMContentLoaded', () => {
-    const defaultLang = 'fr';
-    setLanguage(defaultLang);
-    setCurrentLanguage(defaultLang);
-    initializeSearch();
-    initializePdfControls();
+document.addEventListener('DOMContentLoaded', async () => {
+    await initializePdfViewer();
     initializeAudioPlayer();
-
-    document.getElementById('language-selector').addEventListener('click', (e) => {
-        if (e.target.tagName === 'IMG') {
-            const lang = e.target.getAttribute('data-lang');
-            setLanguage(lang);
-            setCurrentLanguage(lang);
-        }
-    });
-
     loadSongs();
 });
 
