@@ -23,11 +23,27 @@ document.addEventListener('DOMContentLoaded', async () => {
         updateAllTranslations();
         initializeGoogleDrive();
         await loadSongsFromGitHub();
+        
+        // Ajouter l'écouteur d'événements pour le titre
+        setupTitleClick();
     } catch (error) {
         console.error('Erreur lors de l\'initialisation:', error);
         showErrorMessage('Une erreur est survenue lors du chargement de la page. Veuillez réessayer.');
     }
 });
+
+// Fonction pour configurer le clic sur le titre
+function setupTitleClick() {
+    const titleElement = document.querySelector('header h1'); // Assurez-vous que le sélecteur correspond à votre titre
+    if (titleElement) {
+        titleElement.style.cursor = 'pointer'; // Changer le curseur pour indiquer que c'est cliquable
+        titleElement.addEventListener('click', () => {
+            location.reload(); // Rafraîchir la page
+        });
+    } else {
+        console.error('Élément de titre non trouvé');
+    }
+}
 
 // Nouvelle fonction pour définir la langue par défaut
 async function setDefaultLanguage() {
@@ -83,7 +99,6 @@ function createSongElement(songName, pdfUrl) {
         </div>
     `;
 
-    // Pas besoin de l'écouteur d'événements pour le bouton "Voir PDF"
     songElement.querySelector('.view-tutorial').addEventListener('click', () => openYoutubeViewer(songName));
     songElement.querySelector('.play-audio').addEventListener('click', (e) => toggleAudio(songName, e.target));
 
