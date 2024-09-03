@@ -1,14 +1,14 @@
-// main.js
-
 import { openPdfViewer, initializePdfViewer } from './pdfViewer.js';
 import { initializeAudioPlayer, toggleAudio } from './audio.js';
 import { openYoutubeViewer } from './tutorial.js';
 import { setLanguage, translate } from './translations.js';
+import { initializeSearch, updateSearchTranslation } from './search.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
     try {
         await initializePdfViewer();
         initializeAudioPlayer();
+        initializeSearch();
         setLanguage('fr'); // Initialisez la langue par défaut
         await loadSongs();
         setupLanguageSelector();
@@ -27,6 +27,7 @@ function setupLanguageSelector() {
                 const selectedLanguage = e.target.getAttribute('data-lang');
                 setLanguage(selectedLanguage);
                 updateTranslations();
+                updateSearchTranslation(translations, selectedLanguage);
             }
         });
     } else {
@@ -69,16 +70,12 @@ function createSongElement(songName, pdfUrl) {
     const songElement = document.createElement('div');
     songElement.className = 'song';
 
-    const viewPdfText = translate('view_pdf');
-    const viewTutorialText = translate('view_tutorial');
-    const playAudioText = translate('play_audio');
-
     songElement.innerHTML = `
         <h2>${songName}</h2>
         <div class="button-container">
-            <button class="view-pdf" data-translate="view_pdf">${viewPdfText}</button>
-            <button class="view-tutorial" data-translate="view_tutorial">${viewTutorialText}</button>
-            <button class="play-audio" data-translate="play_audio">${playAudioText}</button>
+            <button class="view-pdf" data-translate="viewPdf">${translate('viewPdf')}</button>
+            <button class="view-tutorial" data-translate="viewTutorial">${translate('viewTutorial')}</button>
+            <button class="play-audio" data-translate="playAudio">${translate('playAudio')}</button>
         </div>
     `;
 
