@@ -1,44 +1,55 @@
 // audio.js
 
-let currentAudio = null;
+let player;
+let currentVideoId = null;
+let isPlaying = false;
 
-function initializeAudioPlayers() {
+function onYouTubeIframeAPIReady() {
+    player = new YT.Player('player', {
+        height: '0',
+        width: '0',
+        playerVars: {
+            'autoplay': 0,
+            'controls': 0,
+        },
+        events: {
+            'onReady': onPlayerReady
+        }
+    });
+}
+
+function onPlayerReady(event) {
     document.querySelectorAll('.play-pause-button').forEach(button => {
         button.addEventListener('click', (e) => {
-            const songName = e.target.getAttribute('data-song-name');
-            togglePlayPause(songName, e.target);
+            const videoId = e.target.getAttribute('data-video-id');
+            if (currentVideoId !== videoId) {
+                player.loadVideoById(videoId);
+                currentVideoId = videoId;
+                isPlaying = true;
+                updateButtonState(e.target, isPlaying);
+            } else {
+                togglePlayPause(e.target);
+            }
         });
     });
 }
 
-function togglePlayPause(songName, button) {
-    if (currentAudio && currentAudio.getAttribute('data-song-name') !== songName) {
-        // Si une autre chanson est en cours de lecture, on l'arrête
-        currentAudio.pause();
-        currentAudio.currentTime = 0;
-        updateButtonState(document.querySelector(`[data-song-name="${currentAudio.getAttribute('data-song-name')}"]`), false);
-    }
-
-    if (!currentAudio || currentAudio.getAttribute('data-song-name') !== songName) {
-        // Si aucune chanson n'est en cours ou si c'est une nouvelle chanson
-        if (currentAudio) {
-            currentAudio.pause();
-        }
-        currentAudio = new Audio(`songs/${songName}.mp3`); // Assurez-vous que le chemin est correct
-        currentAudio.setAttribute('data-song-name', songName);
-    }
-
-    if (currentAudio.paused) {
-        currentAudio.play();
-        updateButtonState(button, true);
+function togglePlayPause(button) {
+    if (isPlaying) {
+        player.pauseVideo();
     } else {
-        currentAudio.pause();
-        updateButtonState(button, false);
+        player.playVideo();
     }
+    isPlaying = !isPlaying;
+    updateButtonState(button, isPlaying);
 }
 
 function updateButtonState(button, playing) {
     button.textContent = playing ? 'Pause' : 'Lecture';
 }
 
-document.addEventListener('DOMContentLoaded', initializeAudioPlayers);
+document.addEventListener('DOMContentLoaded', () => {
+    const scriptTag = document.createElement('script');
+    scriptTag.src = "https://www.youtube.com/iframe_api";
+    document.body.appendChild(scriptTag);
+});
