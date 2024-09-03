@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         initializeSearch();
         setLanguage(currentLang);
         setCurrentLanguage(currentLang);
-        await loadSongs();
+        await loadSongs(); // Assurez-vous que cette fonction est définie
         setupLanguageSelector();
         updateAllTranslations();
     } catch (error) {
@@ -59,6 +59,30 @@ function updateSongButtonsTranslations() {
     });
 }
 
+async function loadSongs() {
+    try {
+        const response = await fetch('https://api.github.com/repos/wolfangus67/ricky/contents/songs');
+        const files = await response.json();
+        const ukuleleNeck = document.getElementById('ukulele-neck');
+
+        if (!ukuleleNeck) {
+            throw new Error("L'élément 'ukulele-neck' n'a pas été trouvé.");
+        }
+
+        files.forEach((file) => {
+            if (file.name.endsWith('.pdf')) {
+                const songName = file.name.replace('.pdf', '').replace(/_/g, ' ');
+                const pdfUrl = `https://raw.githubusercontent.com/wolfangus67/ricky/main/songs/${encodeURIComponent(file.name)}`;
+                const songElement = createSongElement(songName, pdfUrl);
+                ukuleleNeck.appendChild(songElement);
+            }
+        });
+    } catch (error) {
+        console.error('Erreur lors du chargement de la liste des chansons:', error);
+        showErrorMessage("Une erreur s'est produite lors du chargement des chansons. Veuillez réessayer plus tard.");
+    }
+}
+
 function createSongElement(songName, pdfUrl) {
     const songElement = document.createElement('div');
     songElement.className = 'song';
@@ -79,4 +103,9 @@ function createSongElement(songName, pdfUrl) {
     return songElement;
 }
 
-// ... Le reste du code reste inchangé
+function showErrorMessage(message) {
+    const errorElement = document.createElement('div');
+    errorElement.className = 'error-message';
+    errorElement.textContent = message;
+    document.body.appendChild(errorElement);
+}
