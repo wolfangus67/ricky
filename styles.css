@@ -1,216 +1,174 @@
-/* Styles généraux */
+/* styles.css */
+
 body {
-    font-family: 'Arial', sans-serif;
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
     margin: 0;
     padding: 20px;
-    background-color: #f2e6d9; /* Fond légèrement beige rappelant le bois clair */
+    background-color: #f4f4f4;
 }
 
-/* En-tête */
-header {
-    background-color: #8B4513; /* Brun foncé pour l'en-tête */
-    color: #f2e6d9; /* Texte clair sur fond foncé */
-    padding: 20px;
-    text-align: center;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
-
-/* Sélecteur de langue */
-#language-selector {
-    margin-top: 10px;
-}
-
-#language-selector img {
-    width: 30px;
-    height: 20px;
-    margin: 0 5px;
-    cursor: pointer;
-}
-
-/* Barre de recherche */
-#search-container {
-    position: relative;
-    margin-top: 20px;
-    text-align: center;
-}
-
-#search-input {
-    padding: 10px;
-    width: 300px;
-    border: 1px solid #8B4513;
-    border-radius: 5px;
-    background-color: #f2e6d9;
-    color: #4A2C2A;
-    font-size: 16px;
-}
-
-#search-button {
-    padding: 10px 20px;
-    background-color: #8B4513;
-    color: #f2e6d9;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    margin-left: 10px;
-}
-
-/* Liste de suggestions */
-#suggestion-list {
-    position: absolute;
-    top: 100%;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 300px;
-    max-height: 200px;
-    overflow-y: auto;
-    background-color: #D2B48C;
-    border: 1px solid #8B4513;
-    border-top: none;
-    border-radius: 0 0 5px 5px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    z-index: 1000;
-    display: none;
-}
-
-#suggestion-list li {
-    padding: 10px;
-    cursor: pointer;
-    color: #4A2C2A;
-}
-
-#suggestion-list li:hover {
-    background-color: #CD853F;
-}
-
-#suggestion-list li .highlight {
-    font-weight: bold;
-    color: #8B4513;
-}
-
-/* Liste des chansons */
 #ukulele-neck {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr); /* Grille de 3 colonnes */
-    gap: 20px; /* Espace entre les éléments */
-    margin-top: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
 }
 
 .song {
-    background-color: #D2B48C; /* Couleur tan pour rappeler le bois */
-    border: 1px solid #8B4513; /* Bordure brun foncé */
+    background-color: #fff;
     border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    margin: 10px;
     padding: 15px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
+    width: 300px;
 }
 
 .song h2 {
-    margin: 0 0 10px 0;
-    color: #4A2C2A; /* Couleur sombre pour le titre */
-    font-family: 'Georgia', serif;
+    margin-top: 0;
+    color: #333;
 }
 
 .button-container {
     display: flex;
-    gap: 10px;
+    justify-content: space-between;
+    margin-top: 10px;
 }
 
-.song button {
-    padding: 8px 12px;
+.button-container button,
+.button-container a.download-pdf {
+    background-color: #4CAF50;
     border: none;
-    border-radius: 4px;
-    cursor: pointer;
+    color: white;
+    padding: 10px 15px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
     font-size: 14px;
-    transition: background-color 0.3s ease;
-    color: #f2e6d9; /* Texte clair pour les boutons */
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s;
 }
 
-.view-pdf {
-    background-color: #6B8E23; /* Vert olive foncé */
+.button-container button:hover,
+.button-container a.download-pdf:hover {
+    background-color: #45a049;
 }
 
-.view-tutorial {
-    background-color: #8B4513; /* Brun */
+.button-container .view-pdf,
+.button-container .download-pdf {
+    background-color: #008CBA;
 }
 
-.play-audio {
-    background-color: #CD853F; /* Brun clair */
+.button-container .view-pdf:hover,
+.button-container .download-pdf:hover {
+    background-color: #007B9E;
 }
 
-.song button:hover {
-    opacity: 0.8;
+.button-container .view-tutorial {
+    background-color: #f44336;
 }
 
-/* Styles pour le visualiseur PDF */
+.button-container .view-tutorial:hover {
+    background-color: #da190b;
+}
+
+.button-container .play-audio {
+    background-color: #ff9800;
+}
+
+.button-container .play-audio:hover {
+    background-color: #e68a00;
+}
+
 #pdf-viewer {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(139, 69, 19, 0.9); /* Fond brun semi-transparent */
+    background-color: rgba(0, 0, 0, 0.8);
     display: none;
-    flex-direction: column;
-    align-items: center;
     justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+#pdf-container {
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    max-width: 90%;
+    max-height: 90%;
+    overflow: auto;
 }
 
 #pdf-controls {
-    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
 }
 
 #pdf-controls button {
-    margin: 0 10px;
-    padding: 10px 20px;
-    background-color: #6B8E23; /* Vert olive foncé */
-    color: #f2e6d9;
+    background-color: #4CAF50;
     border: none;
-    border-radius: 5px;
+    color: white;
+    padding: 10px 15px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    margin: 4px 2px;
     cursor: pointer;
+    border-radius: 4px;
 }
 
-/* Canvas pour le PDF */
-#pdf-render {
-    max-width: 90%;
-    max-height: 80%;
+#close-pdf {
+    background-color: #f44336;
 }
 
-/* Responsive design */
-@media (max-width: 900px) {
-    #ukulele-neck {
-        grid-template-columns: repeat(2, 1fr); /* 2 colonnes sur les écrans moyens */
-    }
-}
-
-@media (max-width: 600px) {
-    #ukulele-neck {
-        grid-template-columns: 1fr; /* 1 colonne sur les petits écrans */
-    }
-
-    #search-input {
-        width: 200px;
-    }
-
-    .song {
-        padding: 10px;
-    }
-
-    .song button {
-        padding: 6px 10px;
-        font-size: 12px;
-    }
-}
-
-/* Styles pour les messages d'erreur */
 .error-message {
     background-color: #f8d7da;
     color: #721c24;
     padding: 10px;
     margin: 10px 0;
     border: 1px solid #f5c6cb;
-    border-radius: 5px;
+    border-radius: 4px;
+}
+
+#search-container {
+    margin-bottom: 20px;
+}
+
+#search-input {
+    padding: 10px;
+    width: 70%;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+#search-button {
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#search-button:hover {
+    background-color: #45a049;
+}
+
+#language-selector {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+#language-selector img {
+    width: 30px;
+    height: 20px;
+    margin-left: 10px;
+    cursor: pointer;
 }
